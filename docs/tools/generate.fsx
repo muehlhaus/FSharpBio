@@ -6,9 +6,9 @@
 // Binaries that have XML documentation (in a corresponding generated XML file)
 let referenceBinaries = [ "FSharp.CoreX.dll"; "FSharpBio.dll"; ]
 // Web site location for the generated documentation
-let website = "/FSharp.ProjectScaffold"
+let website = "http://muehlhaus.github.io/FSharpBio"
 
-let githubLink = "http://github.com/fsprojects/FSharpBio"
+let githubLink = "https://github.com/muehlhaus/FSharpBio"
 
 // Specify more information about your project
 let info =

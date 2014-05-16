@@ -13,7 +13,7 @@ module HierarchivalClustering =
 #endif
 
 
-    open FSharpBio.ML.Unsupervised.HierarchivalClustering
+    open FSharpBio.ML.Unsupervised.HierarchicalClustering
 
     // Binary tree example
     let binaryExample = 
