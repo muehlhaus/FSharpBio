@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>f4c6f4f6-93e6-4cf5-ae0e-07884cbae265</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>FSharpBio</RootNamespace>
+    <AssemblyName>FSharpBio</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <Name>FSharpBio</Name>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>bin\Debug\FSharpBio.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>bin\Release\FSharpBio.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '11.0'">
+      <PropertyGroup>
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(FSharpTargetsPath)" Condition="Exists('$(FSharpTargetsPath)')" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <ItemGroup>
+    <!-- IO -->
+    <Compile Include="IO\FileIO.fs" />
+    <Compile Include="IO\SchemaReader.fs" />
+    <Compile Include="IO\SeqIO.fs" />
+    <Compile Include="IO\FastA.fs" />
+    <Compile Include="IO\Serialization.fs" />
+    <Compile Include="IO\WebServices\WebServer.fs" />
+    <Compile Include="IO\WebServices\SoapUtil.fs" />
+    <Compile Include="IO\WebServices\WSTargetP.fs" />
+    <!-- Statistics -->
+    <Compile Include="Statistics\CoreX.fs" />
+    <Compile Include="Statistics\Descriptive\StatisticalMeasure.fs" />
+    <Compile Include="Statistics\Descriptive\Correlation.fs" />
+    <Compile Include="Statistics\Descriptive\EmpiricalPMF.fs" />
+    <Compile Include="Statistics\Descriptive\Histogram.fs" />
+    <Compile Include="Statistics\Descriptive\Percentiles.fs" />
+    <Compile Include="Statistics\Descriptive\ProbStats.fs" />
+    <Compile Include="Statistics\Descriptive\Rank.fs" />
+    <Compile Include="Statistics\Descriptive\Transform.fs" />
+    <Compile Include="Statistics\Descriptive\Venn.fs" />
+    <Compile Include="Statistics\Testing\TestStatistics.fs" />
+    <Compile Include="Statistics\Testing\Anova.fs" />
+    <Compile Include="Statistics\Testing\TTest.fs" />
+    <Compile Include="Statistics\Testing\PostHoc.fs" />
+    <Compile Include="Statistics\Testing\PvalueAdjust.fs" />
+    <Compile Include="Statistics\Testing\ChiSquareTest.fs" />
+    <Compile Include="Statistics\Fitting\Approximation.fs" />
+    <Compile Include="Statistics\Fitting\Bandwidth.fs" />
+    <Compile Include="Statistics\Fitting\Bootstrap.fs" />
+    <Compile Include="Statistics\Fitting\CrossValidation.fs" />
+    <Compile Include="Statistics\Fitting\Filtering.fs" />
+    <Compile Include="Statistics\Fitting\Interpolation.fs" />
+    <Compile Include="Statistics\Fitting\KernelDensityEstimation.fs" />
+    <Compile Include="Statistics\Fitting\MissingValue.fs" />
+    <Compile Include="Statistics\Fitting\Regression.fs" />
+    <!-- ML -->
+    <Compile Include="ML\Unsupervised\PrincipalComponentAnalysis.fs" />
+    <Compile Include="ML\Unsupervised\DistanceMetrics.fs" />
+    <Compile Include="ML\Unsupervised\IterativeClustering.fs" />
+    <Compile Include="ML\Unsupervised\HierarchicalClustering.fs" />
+    <Compile Include="ML\Unsupervised\DensityClustering.fs" />
+    <!-- Bio -->
+    <Compile Include="PhysicalConstants.fs" />
+    <Compile Include="Isotopes.fs" />
+    <Compile Include="Elements.fs" />
+    <Compile Include="Formula.fs" />
+    <Compile Include="AminoAcids.fs" />
+    <Compile Include="Nucleotides.fs" />
+    <Compile Include="BioSequences.fs" />
+    <Compile Include="Mz\Mass.fs" />
+    <Compile Include="Mz\IsotopicDistribution.fs" />
+    <Compile Include="Ontology\GSEA.fs" />
+    <None Include="packages.config" />
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>..\..\packages\MathNet.Numerics.2.6.2\lib\net40\MathNet.Numerics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MathNet.Numerics.FSharp">
+      <HintPath>..\..\packages\MathNet.Numerics.FSharp.2.6.0\lib\net40\MathNet.Numerics.FSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MathNet.Numerics.IO">
+      <HintPath>..\..\packages\MathNet.Numerics.2.6.2\lib\net40\MathNet.Numerics.IO.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <ProjectReference Include="..\FSharp.CoreX\FSharp.CoreX.fsproj">
+      <Name>FSharp.CoreX</Name>
+      <Project>{3389617e-1c1a-404f-b0ce-3ee1be41fe1f}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y "$(TargetDir)*.dll"  "$(SolutionDir)bin\"
+xcopy /Y "$(TargetDir)*.xml" "$(SolutionDir)bin\"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
