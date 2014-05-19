@@ -37,13 +37,14 @@ open Fake.FileHelper
 open FSharp.Literate
 open FSharp.MetadataFormat
 
-// When called from 'build.fsx', use the public project URL as <root>
-// otherwise, use the current 'output' directory.
-#if RELEASE
+//// When called from 'build.fsx', use the public project URL as <root>
+//// otherwise, use the current 'output' directory.
+//#if RELEASE
+//let root = website
+//#else
+//let root = "file://" + (__SOURCE_DIRECTORY__ @@ "../output")
+//#endif
 let root = website
-#else
-let root = "file://" + (__SOURCE_DIRECTORY__ @@ "../output")
-#endif
 
 // Paths with template/source/output locations
 let bin        = __SOURCE_DIRECTORY__ @@ "../../bin"
@@ -74,7 +75,7 @@ let options =
   "--reference:\"" + bin + "/MathNet.Numerics.dll\" " +
   "--reference:\"" + bin + "/MathNet.Numerics.FSharp.dll\" " 
 
-let tmpOptions = "--reference:D:\\Development\\FSharp\\FSharpBio\\bin\\MathNet.Numerics.dll"  
+let tmpOptions = "--reference:D:\\Development\\Source\\FSharpBio\\bin\\MathNet.Numerics.dll"  
 
 // Build API reference from XML comments
 let buildReference () =
