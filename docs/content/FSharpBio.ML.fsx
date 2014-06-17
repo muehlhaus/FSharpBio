@@ -23,6 +23,8 @@ open FSharpBio.ML.Unsupervised
 FSharpBio
 =========
 
+
+
 *)
 
 
@@ -36,7 +38,7 @@ type irisItem =
       [<FieldAttribute("Species")>] Species : string }
 
 let _ = FileIO.setWorkingDirectory __SOURCE_DIRECTORY__
-let reader = new CsvReader<irisItem>()
+let reader = new CsvReader<irisItem>(schemaMode = SchemaMode.Exact)
 let irisData = reader.ReadFile("./data/irisData.csv", ',', true) |> Seq.toList
 let firstItem = 
     irisData |> Seq.averageBy (fun (item : irisItem) -> item.PetalLength)
@@ -171,9 +173,9 @@ let chartsOfClassifiedData =
 // ---------------
 // Hieracical clustering
 let clusterTree = 
-    HierarchivalClustering.generate<float list> DistanceMetrics.euclidean 
-        HierarchivalClustering.Linker.weightedGroupAverageLwLinker irisFeatures
-let get = HierarchivalClustering.getClusterMemberLabels clusterTree
+    HierarchicalClustering.generate<float list> DistanceMetrics.euclidean 
+        HierarchicalClustering.Linker.weightedGroupAverageLwLinker irisFeatures
+let get = HierarchicalClustering.getClusterMemberLabels clusterTree
 
 let tmp = 
     get
@@ -187,7 +189,7 @@ let tmp =
 let test = Seq.zip (tmp |> Seq.map fst) irisLables
 
 test |> Seq.countBy (fun x -> x)
-HierarchivalClustering.printHClust clusterTree 
+HierarchicalClustering.printHClust clusterTree 
 |> Seq.write "D:/mySite/test2.json"
 
 

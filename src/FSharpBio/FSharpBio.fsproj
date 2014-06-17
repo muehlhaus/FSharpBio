@@ -59,15 +59,6 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <ItemGroup>
-    <!-- IO -->
-    <Compile Include="IO\FileIO.fs" />
-    <Compile Include="IO\SchemaReader.fs" />
-    <Compile Include="IO\SeqIO.fs" />
-    <Compile Include="IO\FastA.fs" />
-    <Compile Include="IO\Serialization.fs" />
-    <Compile Include="IO\WebServices\WebServer.fs" />
-    <Compile Include="IO\WebServices\SoapUtil.fs" />
-    <Compile Include="IO\WebServices\WSTargetP.fs" />
     <!-- Statistics -->
     <Compile Include="Statistics\CoreX.fs" />
     <Compile Include="Statistics\Descriptive\StatisticalMeasure.fs" />
@@ -105,12 +96,29 @@
     <Compile Include="Isotopes.fs" />
     <Compile Include="Elements.fs" />
     <Compile Include="Formula.fs" />
+    <Compile Include="IBioItem.fs" />
+    <Compile Include="AminoAcidLiteral.fs" />
+    <Compile Include="NucleotideLiteral.fs" />
+    <Compile Include="IsotopicLabels.fs" />
+    <Compile Include="ModificationInfo.fs" />
     <Compile Include="AminoAcids.fs" />
     <Compile Include="Nucleotides.fs" />
+    <Compile Include="BioItem.fs" />
     <Compile Include="BioSequences.fs" />
     <Compile Include="Mz\Mass.fs" />
     <Compile Include="Mz\IsotopicDistribution.fs" />
+    <Compile Include="Mz\Digestion.fs" />
+    <Compile Include="Mz\Modification.fs" />
     <Compile Include="Ontology\GSEA.fs" />
+    <!-- IO -->
+    <Compile Include="IO\FileIO.fs" />
+    <Compile Include="IO\SchemaReader.fs" />
+    <Compile Include="IO\SeqIO.fs" />
+    <Compile Include="IO\FastA.fs" />
+    <Compile Include="IO\Serialization.fs" />
+    <Compile Include="IO\WebServices\WebServer.fs" />
+    <Compile Include="IO\WebServices\SoapUtil.fs" />
+    <Compile Include="IO\WebServices\WSTargetP.fs" />
     <None Include="packages.config" />
     <None Include="app.config" />
   </ItemGroup>

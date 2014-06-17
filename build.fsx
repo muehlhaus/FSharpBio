@@ -25,12 +25,12 @@ let project = "FSharpBio"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "FsharpBio aims to be a user-friendly library for Bioinformatics written in F#."
+let summary = "FSharpBio aims to be a user-friendly library for Bioinformatics written in F#."
 
 // Longer description of the project
 // (used as a description for NuGet package; line breaks are automatically cleaned up)
 let description = """
-  FsharpBio aims to be a user-friendly library for Bioinformatics written in F#. It contains the basic data 
+  FSharpBio aims to be a user-friendly library for Bioinformatics written in F#. It contains the basic data 
   structures for common biological objects like amino acids and nucleotides based on chemical formulas and chemical elements. 
   It facilitates some basic machine learning task as well as statistical analysis of biological data set. """
 // List of author names (for NuGet package)
