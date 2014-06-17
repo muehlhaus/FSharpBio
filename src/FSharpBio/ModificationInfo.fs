@@ -1,4 +1,4 @@
-﻿namespace Fsharp.Bio
+﻿namespace FSharpBio
 
 open Microsoft.FSharp.Reflection 
 open System.Reflection 
@@ -34,30 +34,30 @@ module ModificationInfo =
     let createModificationTerminal name generalName formula aminoAcidSymbol location =
         { Name = name; GeneralName = generalName; Formula = formula; AminoAcidSymbol = aminoAcidSymbol; Location = location; }
     
-    type ModificationInfo =
+    type Modification =
         | Residual of ModificationResidual
         | Terminal of ModificationTerminal        
         | Both     of ModificationResidual * ModificationTerminal         
 
     /// Returns true if AminoAcid is modified at the residual
-    let isResidualModified (m:ModificationInfo) =
+    let isResidualModified (m:Modification) =
         match m with
-        | ModificationInfo.Residual (_) -> true
-        | ModificationInfo.Both (_)     -> true
+        | Modification.Residual (_) -> true
+        | Modification.Both (_)     -> true
         | _                             -> false   
 
 
     /// Returns true if AminoAcid is modified at the terminal
-    let isTerminalModified (m:ModificationInfo) =
+    let isTerminalModified (m:Modification) =
         match m with
-        | ModificationInfo.Terminal (_) -> true
-        | ModificationInfo.Both (_)     -> true
+        | Modification.Terminal (_) -> true
+        | Modification.Both (_)     -> true
         | _                             -> false
 
 
-    let formula (m:ModificationInfo) =
+    let formula (m:Modification) =
         match m with
-        | ModificationInfo.Residual (mr) -> mr.Formula
-        | ModificationInfo.Terminal (mt) -> mt.Formula
-        | ModificationInfo.Both (mr,mt)  -> Formula.add mr.Formula mt.Formula
+        | Modification.Residual (mr) -> mr.Formula
+        | Modification.Terminal (mt) -> mt.Formula
+        | Modification.Both (mr,mt)  -> Formula.add mr.Formula mt.Formula
                                                     

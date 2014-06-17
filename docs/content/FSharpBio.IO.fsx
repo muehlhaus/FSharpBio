@@ -1,10 +1,19 @@
+(*** hide ***)
+#I "../../bin"
+
+(**
+
+
+
+**)
+
 // ##################################################################
 // Examples for Fsharp.FsIO Project
 //
 // --- Csv-reader
 // --- FatsA reader/ writer
-#r @"D:\Development\FSharp\FSharpBio\bin\FSharp.CoreX.dll"
-#r @"D:\Development\FSharp\FSharpBio\bin\FSharpBio.dll"
+#r "FSharp.CoreX.dll"
+#r "FSharpBio.dll"
 
 open FSharpBio.IO
 open FSharpBio.IO.SchemaReader

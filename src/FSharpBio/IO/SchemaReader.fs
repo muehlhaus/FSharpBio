@@ -256,7 +256,7 @@ module SchemaReader =
                 let skipLines             = (defaultArg skipLines 0) 
                 let skipLinesBeforeHeader = (defaultArg skipLinesBeforeHeader 0) 
                 let header = match firstLineHasHeader with
-                             | true  -> for i = 0 to skipLinesBeforeHeader do reader.ReadLine() |> ignore
+                             | true  -> for i = 1 to skipLinesBeforeHeader do reader.ReadLine() |> ignore
                                         let tmpLine = reader.ReadLine()
                                         if tmpLine = null then 
                                             reader.Close()

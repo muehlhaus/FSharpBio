@@ -104,8 +104,17 @@ module Regression =
                         ) (0.,0.)
         1.0 - (SSE / SST)
  
- 
+
+    /// Calculates Akaike information criterion (AIC) which is a measure of the relative quality of a statistical model for a given set of data    
+    let calcAIC order n sse = 
+        n * (log (sse / n)) + (2. * order)
+
+
+    /// Calculates Bayesian information criterion (BIC) which is a measure of the relative quality of a statistical model for a given set of data
+    let calcBIC (order:float) n sse = 
+        n * log (sse/n) + order * log (n) 
     
+
     /// Calculates SSE: sum of squares of errors
     /// also: unexplained sum of squares
     let private calculateSSE (fitFunc:float -> float)  (x_data : Vector<float>) (y_data : Vector<float>) = 

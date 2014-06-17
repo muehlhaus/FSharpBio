@@ -1,4 +1,4 @@
-﻿namespace Fsharp.Bio
+﻿namespace FSharpBio
 
 open System
 

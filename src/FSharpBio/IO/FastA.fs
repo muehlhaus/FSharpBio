@@ -26,15 +26,7 @@ module FastA =
     let private same_group l =             
         not (String.length l = 0 || l.[0] <> '>')
     
-    // Matches grouped lines and concatenates them
-    let private record d (converter:char -> 'a) = 
-        match d with
-        | [] -> raise (System.Exception "Incorrect FASTA format")
-        | (h:string) :: t when h.StartsWith ">" ->  let header = h .Remove(0,1)
-                                                    let sequence = Seq.concat t |> Seq.map converter
-                                                    createFastaItem header sequence
-                                                        
-        | h :: _ -> raise (System.Exception "Incorrect FASTA format")
+
 
                 
     /// <summary>Reads <c>FastaItem</c> from file.
@@ -43,11 +35,42 @@ module FastA =
     /// <param name="filePath">File path</param>
     /// <returns>A new seq of <c>FastaItem</c>.</returns>         
     let fromFile converter (filePath) =
+        // Matches grouped lines and concatenates them
+        let record d (converter:char -> 'a) = 
+            match d with
+            | [] -> raise (System.Exception "Incorrect FASTA format")
+            | (h:string) :: t when h.StartsWith ">" ->  let header = h .Remove(0,1)
+                                                        let sequence = Seq.concat t |> Seq.map converter
+                                                        createFastaItem header sequence
+                                                        
+            | h :: _ -> raise (System.Exception "Incorrect FASTA format")        
+        // main
         FileIO.readFile filePath
         |> Seq.filter (fun (l:string) -> not (l.StartsWith ";" || l.StartsWith "#"))
         |> Seq.groupWhen same_group 
         |> Seq.map (fun l -> record (List.ofSeq l) converter)
 
+
+    /// <summary>Reads <c>FastaItem</c> from file allowing for parse to optional pattern.
+    /// </summary>
+    /// <param name="converter">Determines type of sequence by converting <c>char -> type otion</c> </param>
+    /// <param name="filePath">File path</param>
+    /// <returns>A new seq of <c>FastaItem</c>.</returns>         
+    let fromFileWithOptional (converter:char-> Option<'a>) (filePath) =
+        // Matches grouped lines and concatenates them
+        let record d (converter:char -> Option<'a>) = 
+            match d with
+            | [] -> raise (System.Exception "Incorrect FASTA format")
+            | (h:string) :: t when h.StartsWith ">" ->  let header = h .Remove(0,1)
+                                                        let sequence = Seq.concat t |> Seq.choose converter
+                                                        createFastaItem header sequence
+                                                        
+            | h :: _ -> raise (System.Exception "Incorrect FASTA format") 
+
+        FileIO.readFile filePath
+        |> Seq.filter (fun (l:string) -> not (l.StartsWith ";" || l.StartsWith "#"))
+        |> Seq.groupWhen same_group 
+        |> Seq.map (fun l -> record (List.ofSeq l) converter)
                   
     /// <summary>Writes <c>FastaItem</c> to file.
     /// </summary>

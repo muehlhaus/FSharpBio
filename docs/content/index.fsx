@@ -4,10 +4,12 @@
 #I "../../bin"
 
 (**
-FSharpBio
-=========
+FSharpBio: Documentation
+========================
 
-Documentation
+FSharpBio aims to be a user-friendly library for Bioinformatics written in F#. It contains the basic data 
+structures for common biological objects like amino acids and nucleotides based on chemical formulas and chemical elements. 
+It facilitates some basic machine learning task as well as statistical analysis of biological data set.
 
 Example
 -------
@@ -36,7 +38,9 @@ The library comes with comprehensible documentation.
 It can include a tutorials automatically generated from `*.fsx` files in [the content folder][content]. 
 The API reference is automatically generated from Markdown comments in the library implementation.
 
- * [Tutorial](tutorial.html) contains a further explanation of this sample library.
+ * Tutorial contains a further explanation of this sample library.
+ ** [IO tutorial](FSharpBio.IO.html) for file input / outlut using FSharpBio
+ ** [Machine learning tutorial](FSharpBio.ML.html) using FSharpBio
 
  * [API Reference](reference/index.html) contains automatically generated documentation for all types, modules
    and functions in the library. This includes additional brief samples on using most of the
