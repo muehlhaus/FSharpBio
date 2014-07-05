@@ -2,14 +2,7 @@
 
 module Mass =
     
-    let CO  = Formula.parseFormulaString "CO"
-    let CO2 = Formula.parseFormulaString "CO2"
-    let OH  = Formula.parseFormulaString "OH"  //
-    let H2O = Formula.parseFormulaString "H2O"
-    let NH  = Formula.parseFormulaString "NH"  //
-    let NH2 = Formula.parseFormulaString "NH2"
-    let NH3 = Formula.parseFormulaString "NH3"
-    
+   
     let protonMass =  1.00727646677 // Wiki: 1,007 276 466 812(90) u
 
     /// <summary>

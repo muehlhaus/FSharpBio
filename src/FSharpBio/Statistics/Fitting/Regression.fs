@@ -263,5 +263,8 @@ module Regression =
 
 
       
-            
+        // <summary>
+        // Find the model parameters β such that X*β with predictor X becomes as close to response Y as possible, with least squares residuals.
+        // Uses a singular value decomposition and is therefore more numerically stable (especially if ill-conditioned) than the normal equations or QR but also slower.
+        // </summary>            
                   

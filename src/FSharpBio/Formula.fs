@@ -78,5 +78,13 @@ module Formula =
 
                                     
 
+    module Table =
 
+        let CO  = parseFormulaString "CO"
+        let CO2 = parseFormulaString "CO2"
+        let OH  = parseFormulaString "OH"  //
+        let H2O = parseFormulaString "H2O"
+        let NH  = parseFormulaString "NH"  //
+        let NH2 = parseFormulaString "NH2"
+        let NH3 = parseFormulaString "NH3"
 

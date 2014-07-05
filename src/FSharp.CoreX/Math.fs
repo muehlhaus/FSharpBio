@@ -51,8 +51,9 @@ module Math =
         x + sqrt(square x + 1.) |> log
 
 
-
-
+    /// Rounds a double-precision floating-point value to a specified number of fractional digits.  
+    let round (digits:int) (x:float) =
+        System.Math.Round(x, digits)
     
 
 

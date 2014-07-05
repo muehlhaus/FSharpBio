@@ -5,7 +5,7 @@ module AminoAcids =
 
     open AminoAcidLiteral
 
-
+    /// Marker interface for generic AminoAcids
     type IAminoAcid =
         inherit IBioItem
         abstract member ToLiteral : AminoAcidLiteral
@@ -41,6 +41,12 @@ module AminoAcids =
                 | AminoAcid.Both (a,i,m)   -> let af = a |> Propteries.formula
                                               let mf = m |> ModificationInfo.formula
                                               Formula.add af mf  |> i.Label          // label
+            member this.isTerminator = match (AminoAcid.getLiteral this) with
+                                       | AminoAcidLiteral.Ter -> true
+                                       | _                     -> false
+            member this.isGap        = match (AminoAcid.getLiteral this) with
+                                       | AminoAcidLiteral.Gap -> true
+                                       | _                     -> false
                 
 
     /// Compares two AminoAcids and returns true if equal
@@ -121,8 +127,6 @@ module AminoAcids =
                            
        
 
-
-
     /// Returns amino acid formula minus H20 plus given Formula
     let formulaPlus (a:AminoAcid) (plus:Formula.Formula)=  
         match a with
@@ -182,13 +186,19 @@ module AminoAcids =
 
 
 
-//    /// Returns average mass of AminoAcid including H20    
-//    let averageMass (a:AminoAcid) =
-//        Formula.add (formula a) Mass.H2O
-//        |> Formula.averageMass
-//        
-//
-//    /// Returns monoisotopic mass of AminoAcid including H20
-//    let monoisoMass (a:AminoAcid) =
-//        Formula.add (formula a) Mass.H2O
-//        |> Formula.monoisoMass
+    /// Returns average mass of AminoAcid including H20    
+    let averageMass (a:AminoAcid) =
+        formulaPlus a Formula.Table.H2O        
+        |> Formula.averageMass
+        
+
+    /// Returns monoisotopic mass of AminoAcid including H20
+    let monoisoMass (a:AminoAcid) =
+        formulaPlus a Formula.Table.H2O
+        |> Formula.monoisoMass
+
+            
+            
+            
+            
+                 
