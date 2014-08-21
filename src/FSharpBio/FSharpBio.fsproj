@@ -109,7 +109,9 @@
     <Compile Include="Mz\IsotopicDistribution.fs" />
     <Compile Include="Mz\Digestion.fs" />
     <Compile Include="Mz\Modification.fs" />
+    <Compile Include="Mz\PeptideLookUp.fs" />
     <Compile Include="Ontology\GSEA.fs" />
+    <Compile Include="Ontology\SetEnrichmentAnalysis.fs" />
     <!-- IO -->
     <Compile Include="IO\FileIO.fs" />
     <Compile Include="IO\SchemaReader.fs" />

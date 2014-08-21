@@ -5,16 +5,19 @@ module DensityClustering =
     
     
     type LabeledData<'T> =
-        | InCluster of 'T
+        | UnVisited of 'T
         | Visited   of 'T
+        | InCluster of 'T        
         | Noise     of 'T
     
     let private getData (lp:LabeledData<'T>) =
         match lp with
-        | InCluster (x) -> x
+        | UnVisited (x) -> x
         | Visited   (x) -> x
+        | InCluster (x) -> x
         | Noise     (x) -> x
 
+    //let visited        
     
     let getDistance (distance:DistanceMetrics.Distance<'T>) (p1:LabeledData<'T>) (p2:LabeledData<'T>) =
         distance (getData p1) (getData p2)    

@@ -1,7 +1,7 @@
 ﻿namespace FSharpBio.Statistics.Fitting
 
 
-
+/// Module for missing value imputation
 module MissingValue = 
      
     open MathNet.Numerics.LinearAlgebra.Double
@@ -60,9 +60,8 @@ module MissingValue =
 
 
 
-    // ##### ##### ##### ##### ##### ##### #####
-    //    replace +Infinity with biggest value in Matrix
-    //    replace -Infinity with smallest value in Matrix    
+    
+    /// Replace +Infinity with max value and -Infinity with min value in matrix        
     let replaceInfinityValues (m:Matrix<float>) =        
         if ( m |> Matrix.exists (fun x -> System.Double.IsInfinity(x) ) ) && ( m |> Matrix.exists (fun x -> not(System.Double.IsNaN(x) || System.Double.IsInfinity(x) ) ) ) then
                 //replace inf
@@ -80,8 +79,8 @@ module MissingValue =
             m
 
 
-    // ##### ##### ##### ##### ##### ##### #####
-    //    replaces NaNs in matrix by sampling from a normal distribution over columns    
+    
+    /// Eeplaces NaNs in matrix by sampling from a normal distribution over columns    
     let fillByRandomSampling (m:Matrix<float>) =    
         let getNormalSample (data:float[]) =
             let mean = StatisticalMeasure.NaN.median data 
@@ -101,6 +100,16 @@ module MissingValue =
         
         m
 
+    
+    /// Replaces NaNs in matrix by given 'impute from row values' function
+    let fillSeriesBy (imputeFromRow: seq<float> -> float ) (m:Matrix<float>) =    
+        if ( m |> Matrix.exists (fun x -> System.Double.IsNaN(x) ) ) then                              
+            [0..m.RowCount-1] 
+            |> Seq.iter ( fun rowI -> let currentRow = m.Row(rowI)
+                                      if ( currentRow |> Vector.exists (fun x -> System.Double.IsNaN(x) ) ) then
+                                        let imputedValue = imputeFromRow currentRow
+                                        currentRow |> Seq.iteri ( fun ii x -> if ( System.Double.IsNaN(x) ) then do m.[rowI,ii] <- imputedValue) )
+        
+        m
 
-            
 

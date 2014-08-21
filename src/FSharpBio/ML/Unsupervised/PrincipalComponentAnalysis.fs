@@ -15,7 +15,7 @@ open MathNet.Numerics.LinearAlgebra.Double
     
      *)
 
-
+/// Principle component analysis 
 module PCA =
 
     /// Represents a principle component 

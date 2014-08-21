@@ -100,7 +100,12 @@ module HierarchicalClustering =
     let createClusterValue (id:int) (value:'T) =
         Cluster.Leaf(id,1,value)
 
-
+    
+    /// Returns cluster id and value pair (only from leafs)
+    let tryGetKeyValuePair (c:Cluster<'T>) =
+        match c with    
+        | Cluster.Leaf(id,_,v) -> Some (id,v)
+        | _                    -> None    
 
 
 
