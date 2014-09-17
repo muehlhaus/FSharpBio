@@ -85,6 +85,7 @@
     <Compile Include="Statistics\Fitting\KernelDensityEstimation.fs" />
     <Compile Include="Statistics\Fitting\MissingValue.fs" />
     <Compile Include="Statistics\Fitting\Regression.fs" />
+    <Compile Include="Statistics\Fitting\Spline.fs" />
     <!-- ML -->
     <Compile Include="ML\Unsupervised\PrincipalComponentAnalysis.fs" />
     <Compile Include="ML\Unsupervised\DistanceMetrics.fs" />

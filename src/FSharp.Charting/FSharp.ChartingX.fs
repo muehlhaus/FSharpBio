@@ -101,34 +101,45 @@ module ChartingX =
 
         /// <summary>Display the chart in a new ChartControl in a new Form() (by piping)</summary>
         static member ShowChartWithSize width height (ch : #GenericChart) = // TM : support piping style
-            let frm = new System.Windows.Forms.Form(Visible = true, TopMost = true, Width = 700, Height = 500)
-                        
-            let ctl = new ChartControl(ch, Dock = System.Windows.Forms.DockStyle.Fill)
+            let frm = new System.Windows.Forms.Form(Visible = true, TopMost = true, Width = width + 50, Height = height + 50)                                   
+            
+            let nSize = System.Drawing.Size(width,height)
+            ch.Chart.AutoSize <- false
+            ch.Chart.MinimumSize <- nSize
+            ch.Chart.Size <- nSize
           
+            let ctl = new ChartControl(ch, Dock = System.Windows.Forms.DockStyle.Fill)
+            //ctl.AutoSizeMode <- System.Windows.Forms.AutoSizeMode.GrowOnly
             frm.Controls.Add(ctl)
+            //frm.AutoSizeMode <- System.Windows.Forms.AutoSizeMode.GrowOnly
             frm.Show()
             ctl.Focus() |> ignore
 
             ctl.AutoSize <- false
             ctl.Size <- System.Drawing.Size(width,height)  
-
-            printfn "Height: %i" ctl.Size.Height
+            
             ch
 
 
         /// <summary>Save the chart as an image in the specified image format (by piping)</summary>
-        static member SaveChartAs filename format width height (ch : #GenericChart) =  // TM : support piping style            
+        static member SaveChartAsWithSize (filename:string) (format: ChartImageFormat) width height (ch : #GenericChart) =  // TM : support piping style            
             let frm = new System.Windows.Forms.Form(Visible = false, TopMost = true) //, Width = width, Height = height)
-            //ch.Chart.MaximumSize <- System.Drawing.Size(width,height)
-            ch.Chart.Size  <- System.Drawing.Size(width,height)
+            let nSize = System.Drawing.Size(width,height)
+            //ch.Chart.AutoSize <- false
+            ch.Chart.MinimumSize <- nSize
+            //ch.Chart.Size <- nSize                       
             let ctl = new ChartControl(ch, Dock = System.Windows.Forms.DockStyle.Fill)  
-            ctl.Size <- System.Drawing.Size(width,height)
-            frm.Controls.Add(ctl)
-//            frm.Show()
-//            ctl.Focus() |> ignore
-            
             ch.SaveChartAs(filename,format)
 
+        /// <summary>Save the chart as an image in the specified image format (by piping)</summary>
+        static member SaveChartAs filename format (ch : #GenericChart) =  // TM : support piping style            
+            let frm = new System.Windows.Forms.Form(Visible = false, TopMost = true) //, Width = width, Height = height)
+            let ctl = new ChartControl(ch, Dock = System.Windows.Forms.DockStyle.Fill)  
+            frm.Controls.Add(ctl)
+////            frm.Show()
+////            ctl.Focus() |> ignore
+            
+            ch.SaveChartAs(filename,format)
 
 
         // StripLine 
