@@ -355,7 +355,7 @@ module AminoAcidLiteral =
              | AminoAcidLiteral.Trp -> (Formula.parseFormulaString "C11H10ON2" )
              | AminoAcidLiteral.Tyr -> (Formula.parseFormulaString "C9H9O2N"   )
            
-             | AminoAcidLiteral.Xaa -> (Formula.parseFormulaString "C2H3N1O1"  )
+             | AminoAcidLiteral.Xaa -> (Formula.parseFormulaString "C2H3N1O1"  )  // Averagine Model -> C4.9384 H7.7583 N1.3577 O1.4773 S0.0417
              | AminoAcidLiteral.Xle -> (Formula.parseFormulaString "C6H11N1O1" )
              | AminoAcidLiteral.Glx -> (Formula.parseFormulaString "C5H7N1O3"  )
              | AminoAcidLiteral.Asx -> (Formula.parseFormulaString "C4H5N1O3"  )

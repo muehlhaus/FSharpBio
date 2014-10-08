@@ -93,6 +93,14 @@
     <Compile Include="ML\Unsupervised\HierarchicalClustering.fs" />
     <Compile Include="ML\Unsupervised\DensityClustering.fs" />
     <!-- Bio -->
+    <Compile Include="IO\FileIO.fs" />
+    <Compile Include="IO\SchemaReader.fs" />
+    <Compile Include="IO\SeqIO.fs" />
+    <Compile Include="IO\FastA.fs" />
+    <Compile Include="IO\Serialization.fs" />
+    <Compile Include="IO\WebServices\WebServer.fs" />
+    <Compile Include="IO\WebServices\SoapUtil.fs" />
+    <Compile Include="IO\WebServices\WSTargetP.fs" />
     <Compile Include="PhysicalConstants.fs" />
     <Compile Include="Isotopes.fs" />
     <Compile Include="Elements.fs" />
@@ -111,17 +119,10 @@
     <Compile Include="Mz\Digestion.fs" />
     <Compile Include="Mz\Modification.fs" />
     <Compile Include="Mz\PeptideLookUp.fs" />
+    <Compile Include="Mz\EmpiricalTargetDecoy.fs" />
     <Compile Include="Ontology\GSEA.fs" />
     <Compile Include="Ontology\SetEnrichmentAnalysis.fs" />
     <!-- IO -->
-    <Compile Include="IO\FileIO.fs" />
-    <Compile Include="IO\SchemaReader.fs" />
-    <Compile Include="IO\SeqIO.fs" />
-    <Compile Include="IO\FastA.fs" />
-    <Compile Include="IO\Serialization.fs" />
-    <Compile Include="IO\WebServices\WebServer.fs" />
-    <Compile Include="IO\WebServices\SoapUtil.fs" />
-    <Compile Include="IO\WebServices\WSTargetP.fs" />
     <None Include="packages.config" />
     <None Include="app.config" />
   </ItemGroup>
@@ -130,15 +131,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MathNet.Numerics">
-      <HintPath>..\..\packages\MathNet.Numerics.2.6.2\lib\net40\MathNet.Numerics.dll</HintPath>
+      <HintPath>..\..\packages\MathNet.Numerics.3.2.3\lib\net40\MathNet.Numerics.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MathNet.Numerics.FSharp">
-      <HintPath>..\..\packages\MathNet.Numerics.FSharp.2.6.0\lib\net40\MathNet.Numerics.FSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MathNet.Numerics.IO">
-      <HintPath>..\..\packages\MathNet.Numerics.2.6.2\lib\net40\MathNet.Numerics.IO.dll</HintPath>
+      <HintPath>..\..\packages\MathNet.Numerics.FSharp.3.2.3\lib\net40\MathNet.Numerics.FSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />

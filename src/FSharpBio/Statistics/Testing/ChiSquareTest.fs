@@ -48,7 +48,7 @@ module ChiSquareTest =
             df                   : float          
         ) = class
 
-        let ChiStat = MathNet.Numerics.Distributions.ChiSquare(df)
+        let ChiStat = MathNet.Numerics.Distributions.ChiSquared(df)
         let cdf     = ChiStat.CumulativeDistribution(statistic) 
         let pvalue  = if statistic > 0. then 1.-cdf else cdf
 

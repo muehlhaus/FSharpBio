@@ -30,8 +30,6 @@ open FSharpBio.BioSequences
 
 
 
-
-
 #if INTERACTIVE
     module InstallFsiAutoDisplay =
         // Single
@@ -58,13 +56,64 @@ Converting a peptide string to a bio sequence
 **)
 
 
-let peptide = BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoAcid "PEPTIDE"
-
-BioSequences.toString peptide
-
-
+//AminoAcids.isEqual
+let a = "A"
+let a1 = "A"
 
 
+(hash AminoAcidLiteral.Arg) ^^^ (hash AminoAcidLiteral.Arg)
 
 
  
+
+
+let hashAacLiteralSeq (aacs: seq<AminoAcidLiteral.AminoAcidLiteral>) =
+    let (hash1,hash2,_) =
+        aacs
+        |> Seq.fold (fun (hash1,hash2,h) elem 
+                        -> let h' = hash elem
+                           let hash1 = ((hash1 <<< 5) + hash1) ^^^ h'
+                           let hash2 = ((hash2 <<< 5) + hash2) ^^^ h
+                           (hash1,hash2,h') ) (5381,5381,0)
+    hash1 + (hash2 * 1566083941)
+
+
+
+
+hashAacLiteralSeq [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
+let a = [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
+let b = [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
+a.GetHashCode()
+b.GetHashCode()
+
+
+//let amino1 = 
+
+let aas1 = "PEPTIDE" |> Seq.choose OptionConverter.charToOptionAminoAcid
+let aas2 = "PEPTIDE" |> Seq.choose OptionConverter.charToOptionAminoAcid
+
+aas1 = aas2
+
+let peptide1 = BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoAcid "PEPTIDE"
+let peptide2 = BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoAcid "PEPTIDE"
+peptide1 = peptide2
+
+
+let protein = BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoAcid     """PEPTIDEKR
+PEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKR
+PEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKR
+"""
+BioSequences.toString protein
+
+
+
+
+// Digestion
+
+let proteinDigestion = Mz.Digestion.cleave Mz.Digestion.Table.Trypsin 3 5 100 protein
+
+proteinDigestion
+|> Seq.map Mz.Mass.monoIsotopicPeptideMassFrom
+
+
+proteinDigestion |> Seq.distinct |> Seq.length

@@ -1,7 +1,8 @@
-﻿namespace FSharpBio
+﻿namespace FSharpBio.Mz
 
 module Mass =
     
+    open FSharpBio
    
     let protonMass =  1.00727646677 // Wiki: 1,007 276 466 812(90) u
 
@@ -39,3 +40,17 @@ module Mass =
     let rangePpm ppm mass =
         let deltaM = deltaMassByPpm ppm mass
         (mass - deltaM,mass + deltaM)
+
+
+    /// Calculates the monoisotopic pepitde mass (including H2O)
+    let monoIsotopicPeptideMassFrom (aas:FSharpBio.BioSequences.AminoAcidSeq<_>) =
+        Formula.add (BioSequences.toFormula aas) Formula.Table.H2O
+        |> Formula.monoisoMass
+
+
+    /// Calculates the average pepitde mass (including H2O)
+    let averagePeptideMassFrom (aas:FSharpBio.BioSequences.AminoAcidSeq<_>) =
+        Formula.add (BioSequences.toFormula aas) Formula.Table.H2O
+        |> Formula.averageMass
+
+

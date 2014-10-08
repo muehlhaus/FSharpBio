@@ -5,7 +5,7 @@
 module Spline =
 
     open MathNet.Numerics.LinearAlgebra.Double
-    open MathNet.Numerics.LinearAlgebra.Generic
+    open MathNet.Numerics.LinearAlgebra
 
     /// Some preprocessing of the input data
     let private preprocess (data : (float*float) []) =

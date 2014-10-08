@@ -4,7 +4,8 @@
 /// kernel density estimates
 module KernelDensityEstimation =
     
-    open FSharp.CoreX
+    open FSharp.CoreX     
+    open MathNet.Numerics.IntegralTransforms
     
     /// Different Kernel types to use in KernelDE.Density
     type KernelTyps =   Gaussian
@@ -153,13 +154,13 @@ module KernelDensityEstimation =
 
         let kords =
             let norm = MathNet.Numerics.Distributions.Normal(0.,_bandwidth)
-            let fft = new MathNet.Numerics.IntegralTransforms.Algorithms.DiscreteFourierTransform()            
+            //let fft = new MathNet.Numerics.IntegralTransforms.Algorithms.DiscreteFourierTransform()            
             let tmp =  let a = Seq.Double.seqInit (0.0) (2.*(_up-_lo)) (float(2 * _n)) |> Seq.toArray
                        (a.[(_n + 1)..(2 * _n)-1] <- (a.[1.._n-1] |> Array.rev |> Array.map (fun x -> x * -1.0)  ) )
                        a |> Array.map (fun x -> kkernelFunction(x))
-            let fftY     = fft.NaiveForward ((_y |> Array.map  ( fun d -> System.Numerics.Complex(d,0.) ) ), MathNet.Numerics.IntegralTransforms.FourierOptions.NoScaling)
-            let fftKords = fft.NaiveForward ((tmp|> Array.map  ( fun d -> System.Numerics.Complex(d,0.))), MathNet.Numerics.IntegralTransforms.FourierOptions.NoScaling)
-            fft.NaiveInverse ( (Array.map2 ( fun y k -> y * System.Numerics.Complex.Conjugate(k) ) fftY fftKords),MathNet.Numerics.IntegralTransforms.FourierOptions.NoScaling)
+            let fftY     = Fourier.NaiveForward ((_y |> Array.map  ( fun d -> System.Numerics.Complex(d,0.) ) ), MathNet.Numerics.IntegralTransforms.FourierOptions.NoScaling)
+            let fftKords = Fourier.NaiveForward ((tmp|> Array.map  ( fun d -> System.Numerics.Complex(d,0.))), MathNet.Numerics.IntegralTransforms.FourierOptions.NoScaling)
+            Fourier.NaiveInverse ( (Array.map2 ( fun y k -> y * System.Numerics.Complex.Conjugate(k) ) fftY fftKords),MathNet.Numerics.IntegralTransforms.FourierOptions.NoScaling)
             |> Array.toSeq
             |> Seq.truncate (_n)    
             |> Seq.map ( fun c -> let tmp = c.Real / float(_y.Length)

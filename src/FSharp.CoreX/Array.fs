@@ -85,3 +85,15 @@ module Array =
             arr.[i - 1] <- tmp
         arr  
 
+    
+//    /// Adds two arrays pointwise
+//    let inline (.+) a b = Array.map2 (+) a b
+//    /// Substracts two arrays pointwise
+//    let inline (.-) a b = Array.map2 (-) a b
+//    /// Multipies two arrays pointwise
+//    let inline (.*) a b = Array.map2 (*) a b
+//    /// Divides two arrays pointwise
+//    let inline (./) a b = Array.map2 (/) a b
+
+//    type 'T ``[]`` with
+//        static member inline (+) (a b = Array.map2 (+) a b

@@ -1,4 +1,4 @@
-﻿namespace FSharpBio
+﻿namespace FSharpBio.Mz
 
 
 

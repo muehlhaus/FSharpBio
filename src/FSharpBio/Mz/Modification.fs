@@ -1,13 +1,14 @@
-﻿namespace FSharpBio
+﻿namespace FSharpBio.Mz
 
 module Modification =
      
-    open AminoAcids
-    open BioSequences
-    open ModificationInfo
+    open FSharpBio
+    open FSharpBio.AminoAcids
+    open FSharpBio.BioSequences
+    open FSharpBio.ModificationInfo
     open Digestion
     //open Fsharp.FsGenerics
-    open IsotopicLabels
+    open FSharpBio.IsotopicLabels
     open System
 
 

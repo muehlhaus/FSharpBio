@@ -4,7 +4,7 @@
 open FSharpBio.Statistics
 open FSharpBio.Statistics.Descriptive
 open MathNet.Numerics
-open MathNet.Numerics.LinearAlgebra.Generic
+open MathNet.Numerics.LinearAlgebra
 open MathNet.Numerics.LinearAlgebra.Double
 
 
@@ -66,7 +66,7 @@ module PCA =
     let toAdjustStandardize (data:Matrix<float>) : AdjustmentFactory =                
         let colMeans = StatisticalMeasure.Matrix.columnMean data |> Seq.toArray                     
         // Atttention: not entierly shure if space of data before
-        let colStDev = [| for (i,coli) in data.ColumnEnumerator() do
+        let colStDev = [| for coli in data.EnumerateColumns() do
                                 yield StatisticalMeasure.stDevPopulation coli |]        
         let adjust (direction:AdjustmentDirection) (aData:Matrix<float>) = 
             match direction with
@@ -82,7 +82,7 @@ module PCA =
         let colMeans = StatisticalMeasure.Matrix.columnMean data |> Seq.toArray                     
         let sqrtI = sqrt (float data.RowCount)
         // Atttention: not entierly shure if space of data before
-        let colStDev = [| for (i,coli) in data.ColumnEnumerator() do
+        let colStDev = [| for coli in data.EnumerateColumns() do
                                 yield StatisticalMeasure.stDevPopulation coli |]        
         let adjust (direction:AdjustmentDirection)  (aData:Matrix<float>) = 
             match direction with
@@ -138,7 +138,7 @@ module PCA =
         // Calculate the eigenvectors and eigenvalues
         let evd = covMatrix.Evd()
         
-        createComponentsOf (evd.EigenVectors()) (evd.EigenValues() |> Seq.map (fun x -> sqrt x.r))
+        createComponentsOf (evd.EigenVectors) (evd.EigenValues |> Seq.map (fun x -> sqrt x.r))
 
 
 
@@ -150,9 +150,9 @@ module PCA =
         let transpose = if dataMatrix.RowCount < dataMatrix.ColumnCount then true else false
         
         let svd            =  if transpose then dataMatrix.Transpose().Svd(true) else dataMatrix.Svd(true)
-        let singularValues = svd.W().Diagonal()
+        let singularValues = svd.W.Diagonal()
         // EigenVectors are the right sigular vectors
-        let eigenVectors   = if transpose then svd.U() else svd.VT().Inverse()
+        let eigenVectors   = if transpose then svd.U else svd.VT.Inverse()
 //        // Eigenvalues are the square of the singular values
 //        let eigenValues = singularValues |> Vector.map (fun x -> x * x ) 
         
@@ -172,18 +172,18 @@ module PCA =
     /// Returns feature matrix (eigenvector matrix) from components
     let getFeatureMatrixOfComponents (components:Component[]) = 
         components
-        |> Seq.map (fun c -> DenseVector(c.EigenVector)) 
+        |> Seq.map (fun c -> c.EigenVector) 
         |> Seq.toList
-        |> DenseMatrix.ofColumnVectors
+        |> DenseMatrix.OfColumnArrays
 
 
     /// Returns communality
     let getCommunality (components:Component[]) = 
         let fsMatrix = 
             components
-            |> Seq.map (fun c -> DenseVector(c.Loadings)) 
+            |> Seq.map (fun c -> c.Loadings) 
             |> Seq.toList
-            |> DenseMatrix.ofColumnVectors
+            |> DenseMatrix.OfColumnArrays
         fsMatrix.TransposeAndMultiply(fsMatrix).Diagonal().ToArray()
 
 

@@ -6,7 +6,7 @@ we estimate the relationship of one variable with another by expressing one in t
 *)
 module Regression =    
 
-    open MathNet.Numerics.LinearAlgebra.Generic
+    open MathNet.Numerics.LinearAlgebra
     open MathNet.Numerics.LinearAlgebra.Double
     open FSharpBio.Statistics
     
@@ -208,8 +208,8 @@ module Regression =
             if x_data.Count <> y_data.Count then
                 raise (System.ArgumentException("vector x and y have to be the same size!"))
             let N = x_data.Count
-            let oneVec = DenseVector.create N 1. :> Vector<float>
-            let X = DenseMatrix.ofColumns N 2 [| oneVec; x_data|]
+            let oneVec = DenseVector.create N 1. //:> Vector<float>
+            let X = DenseMatrix.OfColumnVectors [ oneVec; x_data]
 
             let coef = X.QR().Solve(y_data)
             coef 
@@ -233,10 +233,11 @@ module Regression =
     module Polynomial =
         //http://www.wolframalpha.com/input/?i=Vandermonde%20matrix&lk=1&a=ClashPrefs_%2aMathWorld.VandermondeMatrix-
         let private vandermondeRow (order) (x:float) = 
-            DenseVector.OfEnumerable (seq { for i = 0 to order do yield x**(float i) })
+            //DenseVector.OfEnumerable (seq { for i = 0 to order do yield x**(float i) })
+            vector [ for i = 0 to order do yield x**(float i) ]
 
         let private vandermondeMatrix (order) (vec : Vector<float>) =        
-            DenseMatrix.ofRows (vec.Count) (order + 1) [| for i = 0 to (vec.Count - 1) do yield (vandermondeRow order vec.[i]) |]
+            DenseMatrix.ofRows [ for i = 0 to (vec.Count - 1) do yield (vandermondeRow order vec.[i]) ]
               
 
         /// Caclualtes the coefficients for polynomial regression

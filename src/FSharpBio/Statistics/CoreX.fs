@@ -6,14 +6,14 @@
 module CoreX =
 
     open MathNet.Numerics
-    open MathNet.Numerics.LinearAlgebra.Generic
+    open MathNet.Numerics.LinearAlgebra
     open MathNet.Numerics.LinearAlgebra.Double
 
 
 
     // ########################################################################
     // Define type extension for the generic vector type     
-    type MathNet.Numerics.LinearAlgebra.Generic.
+    type MathNet.Numerics.LinearAlgebra.
         Vector<'T when 'T : struct and 'T : (new : unit -> 'T) 
                    and 'T :> System.IEquatable<'T> and 'T :> System.IFormattable 
                    and 'T :> System.ValueType> with
@@ -35,7 +35,7 @@ module CoreX =
     
     // ########################################################################
     // Define type extension for the generic matrix type
-    type MathNet.Numerics.LinearAlgebra.Generic.
+    type MathNet.Numerics.LinearAlgebra.
         Matrix<'T when 'T : struct and 'T : (new : unit -> 'T) 
                    and 'T :> System.IEquatable<'T> and 'T :> System.IFormattable 
                    and 'T :> System.ValueType> with
@@ -111,28 +111,30 @@ module CoreX =
 
 
         /// Returns an System.Collections.Generic.IEnumerable that enumerates over the rows        
+        [<System.Obsolete("Do not use. Use EnumerateRows instead.")>]
         member this.toSeqRowWise () =
-            this.RowEnumerator()
-            |> Seq.map (fun (i,row) -> row :> seq<float>)
+            this.EnumerateRows()
+            |> Seq.map (fun (row) -> row :> seq<float>)
 
 
         /// Returns an System.Collections.Generic.IEnumerable that enumerates over the column
+        [<System.Obsolete("Do not use. Use EnumerateColumns instead.")>]
         member this.toSeqColumnWise () =
-            this.ColumnEnumerator()
-            |> Seq.map (fun (i,column) -> column :> seq<float>)
+            this.EnumerateColumns()
+            |> Seq.map (fun (column) -> column :> seq<float>)
 
 
         /// Returns an jagged array over the rows        
         member this.toJaggedArrayRowWise () =
-            this.RowEnumerator()
-            |> Seq.map (fun (i,row) -> row  |> Seq.toArray)
+            this.EnumerateRows()
+            |> Seq.map (fun (row) -> row  |> Seq.toArray)
             |> Seq.toArray
 
 
         /// Returns an an jagged array  over the column
         member this.toJaggedArrayColumnWise () =
-            this.ColumnEnumerator()
-            |> Seq.map (fun (i,column) -> column |> Seq.toArray)
+            this.EnumerateColumns()
+            |> Seq.map (fun (column) -> column |> Seq.toArray)
             |> Seq.toArray
 
 
@@ -140,33 +142,33 @@ module CoreX =
 module Matrix = 
     
     /// Returns an System.Collections.Generic.IEnumerable that enumerates over the rows  
-    let toSeqRowWise (matrix:MathNet.Numerics.LinearAlgebra.Generic.Matrix<'T>) =
-        matrix.RowEnumerator() |> Seq.map snd
+    let toSeqRowWise (matrix:MathNet.Numerics.LinearAlgebra.Matrix<'T>) =
+        matrix.EnumerateRows()
             
 
     /// Returns an System.Collections.Generic.IEnumerable that enumerates over the column
-    let toSeqColumnWise (matrix:MathNet.Numerics.LinearAlgebra.Generic.Matrix<'T>) =
-        matrix.ColumnEnumerator() |> Seq.map snd    
+    let toSeqColumnWise (matrix:MathNet.Numerics.LinearAlgebra.Matrix<'T>) =
+        matrix.EnumerateColumns()  
         
     /// Returns an jagged array over the rows  
-    let toJaggedArrayRowWise (matrix:MathNet.Numerics.LinearAlgebra.Generic.Matrix<'T>) =
-        matrix.RowEnumerator()
-        |> Seq.map (fun (i,row) -> row.ToArray())            
+    let toJaggedArrayRowWise (matrix:MathNet.Numerics.LinearAlgebra.Matrix<'T>) =
+        matrix.EnumerateRows()
+        |> Seq.map (fun (row) -> row.ToArray())            
         |> Seq.toArray
 
 
     /// Returns an an jagged array  over the column
-    let toJaggedArrayColumnWise (matrix:MathNet.Numerics.LinearAlgebra.Generic.Matrix<'T>) =
-        matrix.ColumnEnumerator()
-        |> Seq.map (fun (i,column) -> column.ToArray())
+    let toJaggedArrayColumnWise (matrix:MathNet.Numerics.LinearAlgebra.Matrix<'T>) =
+        matrix.EnumerateColumns()
+        |> Seq.map (fun (column) -> column.ToArray())
         |> Seq.toArray
 
     //  http://stattrek.com/matrix-algebra/covariance-matrix.aspx
     /// Calculates the variance-covariance matrix of the columns
-    let cov (A:MathNet.Numerics.LinearAlgebra.Generic.Matrix<float>)=     
+    let cov (A:MathNet.Numerics.LinearAlgebra.Matrix<float>)=     
         let n = float A.RowCount
         // 11'
-        let onesMatrix = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix.create A.RowCount A.RowCount 1.    
+        let onesMatrix = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix.Create(A.RowCount, A.RowCount, 1.)    
         // deviation scores matrix  a = A - 11'A (1/n)
         let a = A - onesMatrix * A * (1. / n)
         // deviation sum of squares matrix

@@ -14,6 +14,7 @@ module AminoAcids =
     /// <summary>
     ///   Record represents an amino acid               
     /// </summary>
+    [<CustomEquality; CustomComparison >] 
     type AminoAcid =
         | Literal  of AminoAcidLiteral
         | Isotopic of AminoAcidLiteral * IsotopicLabels.IsotopicLabel
@@ -25,6 +26,30 @@ module AminoAcids =
             | AminoAcid.Isotopic (a,i) -> a
             | AminoAcid.Modified (a,m) -> a
             | AminoAcid.Both (a,i,m)   -> a
+
+
+        override this.Equals(other) =
+            match other with
+            | :? AminoAcid as o ->  if obj.ReferenceEquals(this,o) then
+                                        true
+                                    else
+                                        match (this,o) with
+                                        | AminoAcid.Literal  (a),AminoAcid.Literal  (b)         -> false // reference equality already checked ergo: false                                                                       
+                                        | AminoAcid.Isotopic (a,ai),AminoAcid.Isotopic (b,bi)   -> if a.Equals(b) then ai.Equals(bi) else false                                                                                     
+                                        | AminoAcid.Modified (a,am),AminoAcid.Modified (b,bm)   -> if a.Equals(b) then am.Equals(bm) else false
+                                        | AminoAcid.Both (a,ai,am),AminoAcid.Both (b,bi,bm)     -> if a.Equals(b) then am.Equals(bm) && ai.Equals(bi) else false
+                                        | _,_                                                   -> false
+            | _ -> false
+
+        override this.GetHashCode() = hash this
+        
+        interface System.IComparable with
+          member x.CompareTo other =
+              match other with
+              | :? AminoAcid as y -> compare x y
+              | _ -> invalidArg "other" "cannot compare values of different types"
+        
+
         
         interface IAminoAcid with
             member this.ToLiteral = AminoAcid.getLiteral this
@@ -49,6 +74,9 @@ module AminoAcids =
                                        | _                     -> false
                 
 
+    
+    
+    
     /// Compares two AminoAcids and returns true if equal
     let isEqual (a:AminoAcid) (b:AminoAcid) =                 
         if obj.ReferenceEquals(a,b) then

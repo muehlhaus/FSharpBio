@@ -1,6 +1,6 @@
-﻿namespace FSharpBio
+﻿namespace FSharpBio.Mz
 
-open AminoAcids
+open FSharpBio
 open System.Text.RegularExpressions
 
 module Digestion = 
@@ -53,11 +53,13 @@ module Digestion =
         member this.EndIndexMapped with get() = this.MapIndex(this.EndIndex)
         member this.MapIndex(idx:int) = idx - this.StartIndex
 
-        member this.Copy(sourceSeq:AminoAcid [], targetSeq:AminoAcid [], startInSource:int, countFromSource:int) =
+        member this.Copy(sourceSeq:AminoAcids.AminoAcid [], targetSeq:AminoAcids.AminoAcid [], startInSource:int, countFromSource:int) =
             for aaidx = startInSource to (startInSource + countFromSource) - 1 do
                     Array.set targetSeq (this.MapIndex(aaidx)) (sourceSeq.[aaidx])
     end
 
+    
+    /// Returns cleavage index
     let matchIndices (protease : Protease) (maxCleavages:int) (minLength:int) (maxLength:int) (aminoAcidSequence: seq<AminoAcids.AminoAcid>) =    
         seq {
             let stringSequence = new string [|for c in aminoAcidSequence -> AminoAcids.symbol c|]
@@ -76,6 +78,28 @@ module Digestion =
                         if (len >= minLength && len <= maxLength) then
                             yield ci
         }
+
+    /// Reurns a sequence of sub sequences after cleavage
+    // TODO: efficiency
+    let cleave (protease : Protease) (maxCleavages:int) (minLength:int) (maxLength:int) (aminoAcidSequence: seq<AminoAcids.AminoAcid>) =    
+        seq {
+            let stringSequence = new string [|for c in aminoAcidSequence -> AminoAcids.symbol c|]
+            let matches = protease.Expression.Matches(stringSequence)        
+            let cuttingIndices = seq {
+                                    for i = 0 to matches.Count - 1 do 
+                                        yield (matches.[i].Index,matches.[i].Index + matches.[i].Length - 1)
+                                    } |> Seq.toArray                              
+        
+        
+            for cl = 0 to maxCleavages do
+                for count = 0 to cuttingIndices.Length-1 do
+                    if cl + count < cuttingIndices.Length then
+                        let ci = new CleavageIndex(fst(cuttingIndices.[count]), snd(cuttingIndices.[cl + count]), cl)      
+                        let len = ci.SequenceLength       
+                        if (len >= minLength && len <= maxLength) then
+                            yield BioSequences.ofAminoAcidString BioSequences.OptionConverter.charToOptionAminoAcid (stringSequence.Substring(ci.StartIndex,ci.SequenceLength))                            
+                                    }
+
 
     // ##### ##### ##### ##### #####
     module Table = 

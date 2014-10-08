@@ -680,14 +680,14 @@ module StatisticalMeasure =
     module Matrix =
         
         open MathNet.Numerics
-        open MathNet.Numerics.LinearAlgebra.Generic
+        open MathNet.Numerics.LinearAlgebra
         open MathNet.Numerics.LinearAlgebra.Double
 
         /// Returns the covariance matrix for the columns
         let inline columnCovariance (A: #Matrix<float>) =
             let rM = DenseMatrix(A.ColumnCount,A.ColumnCount)    
-            for (i,coli) in A.ColumnEnumerator() do
-                for (j,colj) in A.ColumnEnumerator() do 
+            for (i,coli) in A.EnumerateColumnsIndexed() do
+                for (j,colj) in A.EnumerateColumnsIndexed() do 
                     let cov = covariance coli colj
                     rM.[i,j] <- cov
                     rM.[j,i] <- cov
@@ -697,8 +697,8 @@ module StatisticalMeasure =
         /// Returns the covariance matrix for the rows
         let inline rowCovariance (A: #Matrix<float>) =
             let rM = DenseMatrix(A.RowCount,A.RowCount)    
-            for (i,rowi) in A.RowEnumerator() do
-                for (j,rowj) in A.RowEnumerator() do 
+            for (i,rowi) in A.EnumerateRowsIndexed() do
+                for (j,rowj) in A.EnumerateRowsIndexed() do 
                     let cov = covariance rowi rowj
                     rM.[i,j] <- cov
                     rM.[j,i] <- cov
@@ -708,8 +708,8 @@ module StatisticalMeasure =
         /// Returns the covariance matrix for the columns (Bessel's correction by N-1)
         let inline columnCovarianceUnbaised (A: #Matrix<float>) =
             let rM = DenseMatrix(A.ColumnCount,A.ColumnCount)    
-            for (i,coli) in A.ColumnEnumerator() do
-                for (j,colj) in A.ColumnEnumerator() do 
+            for (i,coli) in A.EnumerateColumnsIndexed() do
+                for (j,colj) in A.EnumerateColumnsIndexed() do 
                     let cov = covarianceUnbaised coli colj
                     rM.[i,j] <- cov
                     rM.[j,i] <- cov
@@ -719,8 +719,8 @@ module StatisticalMeasure =
         /// Returns the covariance matrix for the rows (Bessel's correction by N-1)
         let inline rowCovarianceUnbaised (A: #Matrix<float>) =
             let rM = DenseMatrix(A.RowCount,A.RowCount)    
-            for (i,rowi) in A.RowEnumerator() do
-                for (j,rowj) in A.RowEnumerator() do 
+            for (i,rowi) in A.EnumerateRowsIndexed() do
+                for (j,rowj) in A.EnumerateRowsIndexed() do 
                     let cov = covarianceUnbaised rowi rowj
                     rM.[i,j] <- cov
                     rM.[j,i] <- cov
@@ -729,24 +729,24 @@ module StatisticalMeasure =
 
         /// Returns mean over column
         let inline columnMean (A: #Matrix<float>) =  
-            seq { for (i,coli) in A.ColumnEnumerator() do
+            seq { for coli in A.EnumerateColumns() do
                     yield mean coli }                
 
 
         /// Returns mean over row
         let inline rowMean (A: #Matrix<float>) =
-            seq { for (i,rowi) in A.RowEnumerator() do 
+            seq { for rowi in A.EnumerateRows() do 
                     yield mean rowi }
 
         /// Returns range over row
         let inline rowRange (A: #Matrix<float>) =
-            seq { for (i,rowi) in A.RowEnumerator() do 
+            seq { for rowi in A.EnumerateRows() do 
                     yield range rowi }
 
 
         /// Returns range over column
         let inline columnRange (A: #Matrix<float>) =
-            seq { for (i,coli) in A.ColumnEnumerator() do 
+            seq { for coli in A.EnumerateColumns() do 
                     yield range coli }
 
 

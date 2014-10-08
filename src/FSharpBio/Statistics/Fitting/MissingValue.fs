@@ -5,7 +5,7 @@
 module MissingValue = 
      
     open MathNet.Numerics.LinearAlgebra.Double
-    open MathNet.Numerics.LinearAlgebra.Generic
+    open MathNet.Numerics.LinearAlgebra
     open FSharp.CoreX
     open FSharpBio.Statistics.Descriptive    
 
