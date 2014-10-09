@@ -70,6 +70,7 @@
     <Compile Include="Statistics\Descriptive\Rank.fs" />
     <Compile Include="Statistics\Descriptive\Transform.fs" />
     <Compile Include="Statistics\Descriptive\Venn.fs" />
+    <Compile Include="Statistics\Descriptive\QuantileNorm.fs" />
     <Compile Include="Statistics\Testing\TestStatistics.fs" />
     <Compile Include="Statistics\Testing\Anova.fs" />
     <Compile Include="Statistics\Testing\TTest.fs" />

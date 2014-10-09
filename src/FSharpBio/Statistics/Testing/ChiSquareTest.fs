@@ -66,6 +66,7 @@ module ChiSquareTest =
 
 
     /// Computes the Chi-Square test
+    // n data points -> degrees of freedom = n - 1
     let compute (degreesOfFreedom:int) (expected:seq<float>) (observed:seq<float>) =
         let chi2 =
             Seq.zip observed expected

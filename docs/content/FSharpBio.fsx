@@ -30,20 +30,20 @@ open FSharpBio.BioSequences
 
 
 
-#if INTERACTIVE
-    module InstallFsiAutoDisplay =
-        // Single
-        fsi.AddPrinter( fun (nuc:Nucleotides.Nucleotide) -> (Nucleotides.symbol nuc).ToString() )
-        fsi.AddPrinter( fun (aa:AminoAcids.AminoAcid)    -> (AminoAcids.symbol aa).ToString() )
-    
-        // Sequences
-        fsi.AddPrinter( fun (bs:BioSequences.BioSeq<_>)                -> BioSequences.toString bs )
-
-        // other
-        fsi.AddPrinter( fun (forumla:Formula.Formula) -> Formula.toString forumla )
-    
-
-#endif
+//#if INTERACTIVE
+//    module InstallFsiAutoDisplay =
+//        // Single
+//        fsi.AddPrinter( fun (nuc:Nucleotides.Nucleotide) -> (Nucleotides.symbol nuc).ToString() )
+//        fsi.AddPrinter( fun (aa:AminoAcids.AminoAcid)    -> (AminoAcids.symbol aa).ToString() )
+//    
+//        // Sequences
+//        fsi.AddPrinter( fun (bs:BioSequences.BioSeq<_>)                -> BioSequences.toString bs )
+//
+//        // other
+//        fsi.AddPrinter( fun (forumla:Formula.Formula) -> Formula.toString forumla )
+//    
+//
+//#endif
 
 
 
@@ -56,26 +56,23 @@ Converting a peptide string to a bio sequence
 **)
 
 
-//AminoAcids.isEqual
-let a = "A"
-let a1 = "A"
 
 
-(hash AminoAcidLiteral.Arg) ^^^ (hash AminoAcidLiteral.Arg)
-
-
- 
-
-
-let hashAacLiteralSeq (aacs: seq<AminoAcidLiteral.AminoAcidLiteral>) =
-    let (hash1,hash2,_) =
-        aacs
-        |> Seq.fold (fun (hash1,hash2,h) elem 
-                        -> let h' = hash elem
-                           let hash1 = ((hash1 <<< 5) + hash1) ^^^ h'
-                           let hash2 = ((hash2 <<< 5) + hash2) ^^^ h
-                           (hash1,hash2,h') ) (5381,5381,0)
-    hash1 + (hash2 * 1566083941)
+//(hash AminoAcidLiteral.Arg) ^^^ (hash AminoAcidLiteral.Arg)
+//
+//
+// 
+//
+//
+//let hashAacLiteralSeq (aacs: seq<AminoAcidLiteral.AminoAcidLiteral>) =
+//    let (hash1,hash2,_) =
+//        aacs
+//        |> Seq.fold (fun (hash1,hash2,h) elem 
+//                        -> let h' = hash elem
+//                           let hash1 = ((hash1 <<< 5) + hash1) ^^^ h'
+//                           let hash2 = ((hash2 <<< 5) + hash2) ^^^ h
+//                           (hash1,hash2,h') ) (5381,5381,0)
+//    hash1 + (hash2 * 1566083941)
 
 
 
