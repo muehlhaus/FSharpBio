@@ -174,3 +174,12 @@ module Matrix =
         // deviation sum of squares matrix
         let a'a = a.Transpose() * a
         a'a.Divide n
+
+    
+    /// Concatenates two matrices along the column
+    let append (left:MathNet.Numerics.LinearAlgebra.Matrix<'T>) (right:MathNet.Numerics.LinearAlgebra.Matrix<'T>) =
+            left.Append(right)
+
+    /// Stacks two matrices along the rows        
+    let stack (upper:MathNet.Numerics.LinearAlgebra.Matrix<'T>) (lower:MathNet.Numerics.LinearAlgebra.Matrix<'T>) =
+            upper.Stack(lower)

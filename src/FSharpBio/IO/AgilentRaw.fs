@@ -10,18 +10,20 @@ open FSharpBio.IO.SchemaReader.Attribute
    
 
 module AgilentRaw =
-
+    
+    
     type GalProbeDescription = {
-        [<FieldAttribute(1)>] Block        : int;
-        [<FieldAttribute(3)>] Row          : int;
-        [<FieldAttribute(5)>] Column       : int;
-        [<FieldAttribute(6)>] ID           : string;
-        [<FieldAttribute(7)>] GeneName     : string;
-        [<FieldAttribute(8)>] Identscore   : float
+        //The block number for the feture
+        [<FieldAttribute("Block")>]    Block        : int;
+        [<FieldAttribute("Row")>]      Row          : int;
+        [<FieldAttribute("Column")>]   Column       : int;
+        [<FieldAttribute("ID")>]       ID           : string;
+        [<FieldAttribute("GeneName")>] GeneName     : string;
+        //[<FieldAttribute(8)>] Identscore   : float
         }
 
     let createGalProbeDescription block row column id genename identscore =
-        { Block = block; Row = row; Column = column; ID = id; GeneName = genename; Identscore = identscore; }
+        { Block = block; Row = row; Column = column; ID = id; GeneName = genename; }
 
 
 

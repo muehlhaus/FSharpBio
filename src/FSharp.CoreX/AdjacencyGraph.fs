@@ -2,101 +2,103 @@
 
 
 module Graph =
-  (* -- Same description as above -- truncated! *)
 
-  type VertexData<'V> =
-    int (* identifier *) *
-    'V (* vertex data *)
+    /// Interface needs to be implemented by every node (vertex; point) in a graph
+    type INode<'Tkey when 'Tkey : comparison> =
+       // abstract method
+       //[<XmlAttribute("id")>]
+       abstract member Id   : 'Tkey   
 
-  type EdgeData<'E> =
-    int (* identifier *) *
-    int (* priority *) *
-    int (* vertex target *) *
-    'E (* edge data *)
+    /// Interface needs to be implemented by every edge (connection; link; line; arc) in a graph
+    type IEdge<'Tkey when 'Tkey : comparison> =
+        // abstract method
+       //[<XmlAttribute("id")>]
+       abstract member Id       : 'Tkey
+       //[<XmlAttribute("source")>]
+       abstract member SourceId : 'Tkey
+       //[<XmlAttribute("target")>]
+       abstract member TargetId : 'Tkey
+   
 
-  (* The graph uses adjacency list notation *)
-  type Adjacency<'E> = EdgeData<'E> list
+    /// Alias for a list of edges
+    type Adjacency<'Tedge, 'Tkey when 'Tedge :> IEdge<'Tkey> and 'Tkey : comparison> = 'Tedge list
 
-  (* The Vertex type represents the internal structure
-     of the graph *)
-  type Vertex<'V, 'E> = VertexData<'V> * Adjacency<'E>
+    /// Alias for a single node with its edges
+    type AdjacencyNode<'Tnode, 'Tedge, 'Tkey when
+                 'Tnode :> INode<'Tkey> and
+                 'Tedge :> IEdge<'Tkey> and
+                 'Tkey : comparison> =  'Tnode * Adjacency<'Tedge, 'Tkey>
 
-  (* A Graph is a Vertex list.  The nextNode allows for
-     consistent addressing of nodes *)
-  type Graph<'V, 'E> =
-    int (* nextNode identifier *) *
-    Vertex<'V, 'E> list
+    /// Gets node from adjacencyNode
+    let getNodeFromAdjacencyNode (adjNode:AdjacencyNode<_,_,_>) = fst adjNode
+    
+    /// A Graph is a Vertex list.  The nextNode allows for consistent addressing of nodes
+    // A representation of a directed graph with n vertices using an array of n lists of vertices. List i contains vertex j if there is an edge from vertex i to vertex j.
+    // A weighted graph may be represented with a list of vertex/weight pairs. An undirected graph may be represented by having vertex j in the list for vertex i and vertex i in the list for vertex j.
+    type AdjacencyGraph<'Tnode, 'Tedge, 'Tkey when 'Tnode :> INode<'Tkey> and 'Tedge :> IEdge<'Tkey> and 'Tkey : comparison> =
+        AdjacencyNode<'Tnode, 'Tedge, 'Tkey> list
 
-  (* Empty graph construction *)
-  let empty: Graph<_,_> = (0, [])
+    (* Helper methods for getting the data from a Vertex *)
+    let nodeId (v:AdjacencyNode<'Tnode,'Tedge,'Tkey>) : 'Tkey  = (fst v).Id
 
-  (* Helper methods for getting the data from a Vertex *)
-  let vertexId (v:Vertex<_,_>) = v |> fst |> fst
-  let vertexData (v:Vertex<_,_>) = v |> fst |> snd
-  (* Helper methods for getting the data from an Edge *)
-  let edgeId ((x,_,_,_):EdgeData<_>) = x
-  let edgePriority ((_,x,_,_):EdgeData<_>) = x
-  let edgeTarget ((_,_,x,_):EdgeData<_>) = x
-  let edgeData ((_,_,_,x):EdgeData<_>) = x
 
-  (* Getting a vertex from a graph by id *)
-  let getVertex v (g:Graph<_, _>) : Vertex<_,_> =
-    snd g |> List.find (fun V -> vertexId V = v)
-  (* Getting all edges from a graph by a vertex id *)
-  let getEdges v (g:Graph<_, _>) =
-    g |> getVertex v |> snd
+    /// Tries to get a node and its edges from a graph by id 
+    let tryGetAdjacencyNode v (g:AdjacencyGraph<_,_, _>)  =
+        g |> List.tryFind (fun V -> nodeId V = v)
 
-  (* Add a new vertex *)
-  let addVertex (v:'V) (g:Graph<'V, _>)
-    : (int*Graph<'V,_>) =
-      let id = fst g
-      let s = snd g
-      let newVD : VertexData<_> = (id, v)
-      let newA : Adjacency<_> = []
-      let newV = (newVD, newA)
-      (id, (id + 1, newV::s))
+    /// Getting a node and its edges from a graph by id 
+    let getAdjacencyNode v (g:AdjacencyGraph<_,_, _>)  =
+        g |> List.find (fun V -> nodeId V = v)
 
-  (* Add a new edge.  Edges include a priority value *)
-  let addEdge priority
-    (v:int) (v':int) (e:'E) (g:Graph<'V, 'E>)
-    : (int*Graph<'V,'E>) =
-      let id = fst g
-      let s = snd g
-      let newE : EdgeData<_> = (id, priority, v', e)
-      (id,
-        (id + 1,
-          s |> List.map (fun V ->
-            if (vertexId V) = v then
-              (fst V, newE::(snd V))
-            else V)))
+    /// Tries to get a node from a graph by id 
+    let tryGetNodeById v (g:AdjacencyGraph<_,_, _>)  =
+        match tryGetAdjacencyNode v g with
+        | Some(n,a) -> Some(n) 
+        | None      -> None 
 
-  (* The edges aren't sorted by default so this function
-     sorts them by priority *)
-  let sortEdges (a:Adjacency<_>) =
-    a |> List.sortBy edgePriority
 
-  (* Removes an edge from a graph by id *)
-  let removeEdge (id:int) (g:Graph<_,_>)
-    : Graph<_,_> =
-      let next = fst g
-      let s = snd g
-      (next, s |> List.map ( fun (v, a) ->
-        (v, a |> 
-            List.filter (fun x -> (edgeId x) <> id)))) 
+    /// Getting all edges (adjacency) from a graph by a vertex id
+    let tryGetEdges (v:'Tkey) (g:AdjacencyGraph<_,_, _>) =
+        match tryGetAdjacencyNode v g with
+        | Some(n,a) -> Some(a) 
+        | None      -> None  
 
-  (* Removes a vertex from a graph by id and removes
-     any related edges *)
-  let removeVertex (id:int) (g:Graph<_,_>) 
-    : Graph<_,_> =
-      let next = fst g
-      let s = snd g
-      (next, s |> ([] |> List.fold (fun s' (v, a) ->
-        if (fst v) = id then s'
-        else
-          let f = fun x -> ((edgeTarget x) <> id)
-          let newA = a |> List.filter f
-          let newV = (v, newA)
-          newV::s')))
+    /// Add a new adjacency node
+    let addAdjacencyNode (adjNode:AdjacencyNode<_,_,_>) (g:AdjacencyGraph<'Tnode, 'Tedge,'Tkey>) =
+        let node = getNodeFromAdjacencyNode adjNode
+        match tryGetNodeById node.Id g with
+        | None -> adjNode :: g
+        | _ -> g
+
+    /// Add a new Edge
+    let addEdge (e:'Tedge) (g:AdjacencyGraph<'Tnode, 'Tedge,'Tkey>) : AdjacencyGraph<'Tnode, 'Tedge,'Tkey> = 
+        // Todo test if TargetId points to existing node
+        g
+        |> List.map (fun (v,adj) ->
+             if v.Id = e.SourceId then
+                (v,e::adj)
+             else
+                (v,adj))
+    
+    
+    /// Removes an edge from a graph by id
+    let removeEdge (eId:'Tkey) (g:AdjacencyGraph<'Tnode, 'Tedge,'Tkey>) : AdjacencyGraph<'Tnode, 'Tedge,'Tkey> = 
+        g
+        |> List.map (fun (v,adj) ->
+            (v,adj
+               |> List.filter (fun e -> e.Id <> eId)) )
+
+
+    /// Removes a node from a graph by id and removes any related edges
+    let removeVertex (nodeId:'Tkey) (g:AdjacencyGraph<'Tnode, 'Tedge,'Tkey>) : AdjacencyGraph<'Tnode, 'Tedge,'Tkey> =    
+        g |> ([] |> List.fold (fun s' (v, a) ->
+                        if v.Id = nodeId then 
+                            s'
+                        else
+                            let f          = fun (x:'Tedge) -> (x.TargetId <> nodeId)
+                            let newAdj     = a |> List.filter f
+                            let newAdjNode = (v, newAdj)
+                            newAdjNode::s'))
 
 
 
