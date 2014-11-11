@@ -103,6 +103,7 @@
     <Compile Include="IO\WebServices\WebServer.fs" />
     <Compile Include="IO\WebServices\SoapUtil.fs" />
     <Compile Include="IO\WebServices\WSTargetP.fs" />
+    <Compile Include="Helper.fs" />
     <Compile Include="PhysicalConstants.fs" />
     <Compile Include="Isotopes.fs" />
     <Compile Include="Elements.fs" />
@@ -120,6 +121,7 @@
     <Compile Include="Mz\IsotopicDistribution.fs" />
     <Compile Include="Mz\Digestion.fs" />
     <Compile Include="Mz\Modification.fs" />
+    <Compile Include="Mz\PeptideMassIndex.fs" />
     <Compile Include="Mz\PeptideLookUp.fs" />
     <Compile Include="Mz\EmpiricalTargetDecoy.fs" />
     <Compile Include="Ontology\GSEA.fs" />

@@ -153,7 +153,8 @@ module AminoAcids =
         
        
                            
-       
+    let formula (a:#IAminoAcid) =
+        a.Formula
 
     /// Returns amino acid formula minus H20 plus given Formula
     let formulaPlus (a:AminoAcid) (plus:Formula.Formula)=  
