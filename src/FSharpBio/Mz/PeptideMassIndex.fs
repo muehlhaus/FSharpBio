@@ -22,12 +22,14 @@ module PMI =
                 x.MassKey.CompareTo(y.MassKey)
     
     type MassIndexNode(filePosition:int64, maxChildren:int) = class
-        member this.Entries with get() = new List<MassIndexKey>(maxChildren - 1)
-        member this.Children with get() = new List<int64>()
+        let entries = new List<MassIndexKey>(maxChildren - 1)
+        let children = new List<int64>()
+        member this.Entries with get() = entries
+        member this.Children with get() = children
         member this.FilePosition with get() = filePosition
-        member this.IsLeaf with get() = this.Children.Count = 0
-        member this.NumberOfChildren with get() = this.Children.Count
-        member this.NumberOfEntries with get() = this.Entries.Count
+        member this.IsLeaf with get() = children.Count = 0
+        member this.NumberOfChildren with get() = children.Count
+        member this.NumberOfEntries with get() = entries.Count
     end
 
     type MassIndexNodeIO(stream:Stream, maxChildrenPerNode:int) = class
@@ -139,10 +141,12 @@ module PMI =
 
             if this.IsCachingEnabled = false then
                 n <- this.DiskReadInternal(filePointer)            
-            else if nodeCache.TryGetValue(filePointer, ref n) = false then            
+            else if nodeCache.ContainsKey(filePointer) = false then            
                 //CachePrune();
                 n <- this.DiskReadInternal(filePointer);
-                //nodeCache.Add(n.FilePosition, n);                            
+                //nodeCache.Add(n.FilePosition, n); 
+            else
+                n <- nodeCache.[filePointer]                           
             n
         
         member internal this.DiscAlloc() =

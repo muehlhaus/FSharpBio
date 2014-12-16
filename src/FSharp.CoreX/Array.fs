@@ -85,7 +85,30 @@ module Array =
             arr.[i - 1] <- tmp
         arr  
 
+
+    /// Look up an element in an array by index, returning a value if the index is in the domain of the array and default value if not
+    let tryFindDefault  (arr : _[]) (zero : 'value) (index : int) =
+        match arr.Length < index with
+        | true  -> arr.[index]
+        | false -> zero
+
+
+
+
+// ########################################
+// Static extensions
+
+    type 'T ``[]`` with
+        
+        /// Look up an element in an array by index, returning a value if the index is in the domain of the array and default value if not
+        member this.TryFindDefault  (arr : _[]) (zero : 'value) (index : int) =
+            match arr.Length < index with
+            | true  -> arr.[index]
+            | false -> zero
     
+
+
+
 //    /// Adds two arrays pointwise
 //    let inline (.+) a b = Array.map2 (+) a b
 //    /// Substracts two arrays pointwise

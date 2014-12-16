@@ -12,5 +12,5 @@ module Helper =
     
     let toCreLocusId  (input) =
         match input with
-            | Regex.RegexValue @"Cre(?<chromosom>[\d]*)\.(?<locusId>g[\d]*)\.t(?<spliceId>[\d]*)\.(?<version>[\d]*)" [ chromosom; locusId; _ ; _; ] -> Some( sprintf "Cre%s.%s" chromosom locusId)
+            | Regex.RegexValue @"Cre(?<chromosom>[\d]*)\.g(?<locusId>[\d]*)\.t(?<spliceId>[\d]*)\.(?<version>[\d]*)" [ chromosom; locusId; _ ; _; ] -> Some( sprintf "Cre%s.g%s" chromosom locusId)
             | _ -> None
