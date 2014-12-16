@@ -14,7 +14,7 @@ open FSharpBio.IO
 open FSharpBio.IO.SchemaReader
 open FSharpBio.IO.SchemaReader.Csv
 open FSharpBio.IO.SchemaReader.Attribute
-open MathNet.Numerics.LinearAlgebra.Generic
+open MathNet.Numerics.LinearAlgebra
 open MathNet.Numerics.LinearAlgebra.Double
 open FSharpBio.ML.Unsupervised
 

@@ -3,10 +3,12 @@
 
 module CrossValidation =
 
-    open MathNet.Numerics.LinearAlgebra.Generic
+    open MathNet.Numerics.LinearAlgebra
     open MathNet.Numerics.LinearAlgebra.Double
-
+    
     open FSharpBio.Statistics.Descriptive
+    open FSharpBio.Statistics.Descriptive.StatisticalMeasure
+    
     
     type trainingFunc<'a> = float[] -> float[] -> 'a -> float -> float
         
@@ -23,16 +25,16 @@ module CrossValidation =
                 yield (xData |> Seq.map trainingF) ]
                                                 
         let mData = DenseMatrix.OfColumns (xData.Length,nIterations,predY)
-        let rowMeans = mData.RowEnumerator() |> Seq.map (fun (i,row) -> StatisticalMeasure.mean row)
-        mData.ColumnEnumerator() |> Seq.averageBy (fun (i,col) -> (StatisticalMeasure.UtilityFunctions.sumOfSquares col rowMeans) / float (xData.Length - 1))
+        let rowMeans = Matrix.rowMean mData// mData.RowEnumerator() |> Seq.map (fun (i,row) -> StatisticalMeasure.mean row)
+        mData.EnumerateColumns() |> Seq.averageBy (fun col -> (StatisticalMeasure.UtilityFunctions.sumOfSquares col rowMeans) / float (xData.Length - 1))
 
 
     let optimize rhoS (modelBias:float[]) (modelVariance:float[]) =
         let lower = rhoS |> Seq.min
         let upper = rhoS |> Seq.max
 
-        let akimaBias = MathNet.Numerics.Interpolation.Algorithms.AkimaSplineInterpolation(rhoS |> Seq.toArray,modelBias)
-        let akimaVariance = MathNet.Numerics.Interpolation.Algorithms.AkimaSplineInterpolation(rhoS |> Seq.toArray,modelVariance)
+        let akimaBias = MathNet.Numerics.Interpolation.CubicSpline.InterpolateAkima(rhoS |> Seq.toArray,modelBias)
+        let akimaVariance = MathNet.Numerics.Interpolation.CubicSpline.InterpolateAkima(rhoS |> Seq.toArray,modelVariance)
         let optFunction = new System.Func<float,float>( fun x -> (akimaBias.Differentiate x) - (akimaVariance.Differentiate x) )
                 
         MathNet.Numerics.RootFinding.Brent.FindRoot(optFunction, lower, upper)

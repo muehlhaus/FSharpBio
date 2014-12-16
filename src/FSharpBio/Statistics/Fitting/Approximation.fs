@@ -28,6 +28,6 @@ module Approximation =
         let nx = xy |> Seq.map ( fun (x,y) -> x) |> Seq.toArray
         let ny = xy |> Seq.map ( fun (x,y) -> y) |> Seq.toArray
 
-        let interPol = MathNet.Numerics.Interpolation.Algorithms.LinearSplineInterpolation(nx,ny)
+        let interPol = MathNet.Numerics.Interpolation.LinearSpline.Interpolate(nx,ny)
         v |> Seq.map (fun x ->  interPol.Interpolate(x) )
 

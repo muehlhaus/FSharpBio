@@ -5,7 +5,7 @@ module IterativeClustering =
     open DistanceMetrics
     open FSharpBio.Statistics.Descriptive
     
-    open MathNet.Numerics.LinearAlgebra.Generic
+    open MathNet.Numerics.LinearAlgebra
     open MathNet.Numerics.LinearAlgebra.Double
 
 
@@ -56,8 +56,8 @@ module IterativeClustering =
     // cvmax - Algorith by Moth’d Belal. Al-Daoud (Ref.: A New Algorithm for Cluster Initialization)
     let intitCVMAX (sample: float[] seq) 
                     k =
-        let dmatrix = DenseMatrix.ofRowVectors (sample |> Seq.map (fun row -> DenseVector.ofSeq row) |> Seq.toList)
-        let cvmaxIndex = [| for (i,coli) in dmatrix.ColumnEnumerator() do
+        let dmatrix = DenseMatrix.ofRowArrays (sample |> Seq.toArray)
+        let cvmaxIndex = [| for (i,coli) in dmatrix.EnumerateColumnsIndexed() do
                                 yield (i,(StatisticalMeasure.stDevPopulation coli)) |] |> Array.maxBy (snd) |> fst
         let cvmax = dmatrix.Column(cvmaxIndex) |> Seq.mapi (fun rowI value -> (rowI,value)) |> Seq.toArray |> Array.sortBy snd                 
         

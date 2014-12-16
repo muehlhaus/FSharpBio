@@ -14,14 +14,14 @@ module StatisticalMeasureTest =
 #endif
 
     open MathNet.Numerics.LinearAlgebra.Double
-    open MathNet.Numerics.LinearAlgebra.Generic
+    open MathNet.Numerics.LinearAlgebra
     open FSharp.CoreX
     open FSharpBio.Statistics
     open NUnit.Framework
     open FsUnit
 
-    let inputA = [[90.; 60.; 90.;];[90.; 90.; 30.; ];[60.; 60.; 60.; ];[60.; 60.; 90.; ];[30.; 30.; 30.; ];] |> DenseMatrix.ofList
-    let covA   = [[504.; 360.; 180.; ];[360.; 360.; 0.; ];[180.; 0.; 720.; ];] |> DenseMatrix.ofList
+    let inputA = [[90.; 60.; 90.;];[90.; 90.; 30.; ];[60.; 60.; 60.; ];[60.; 60.; 90.; ];[30.; 30.; 30.; ];] |> DenseMatrix.ofRowList
+    let covA   = [[504.; 360.; 180.; ];[360.; 360.; 0.; ];[180.; 0.; 720.; ];] |> DenseMatrix.ofRowList
     
 
     [<Test>]

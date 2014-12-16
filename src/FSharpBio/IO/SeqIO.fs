@@ -28,10 +28,11 @@ module SeqIO =
 
         /// Reads a file following a given type record schema 
         /// Uses SchemaReader.Csv.CsvReader<'schema>()
-        static member fromFileWithCsvSchema<'schema> (filePath,separator:char, firstLineHasHeader:bool, ?skipLines:int, ?skipLinesBeforeHeader:int) =
+        static member fromFileWithCsvSchema<'schema> (filePath,separator:char, firstLineHasHeader:bool, ?skipLines:int, ?skipLinesBeforeHeader:int,?schemaMode) =
             let skipLines             = (defaultArg skipLines 0) 
             let skipLinesBeforeHeader = (defaultArg skipLinesBeforeHeader 0) 
-            let csvReader = SchemaReader.Csv.CsvReader<'schema>()
+            let schemaMode = (defaultArg schemaMode SchemaReader.Csv.Exact) 
+            let csvReader = SchemaReader.Csv.CsvReader<'schema>(schemaMode=schemaMode)
             csvReader.ReadFile(filePath,separator,firstLineHasHeader,skipLines, skipLinesBeforeHeader)            
         
         

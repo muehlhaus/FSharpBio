@@ -48,7 +48,7 @@ module ChiSquareTest =
             df                   : float          
         ) = class
 
-        let ChiStat = MathNet.Numerics.Distributions.ChiSquare(df)
+        let ChiStat = MathNet.Numerics.Distributions.ChiSquared(df)
         let cdf     = ChiStat.CumulativeDistribution(statistic) 
         let pvalue  = if statistic > 0. then 1.-cdf else cdf
 
@@ -66,6 +66,7 @@ module ChiSquareTest =
 
 
     /// Computes the Chi-Square test
+    // n data points -> degrees of freedom = n - 1
     let compute (degreesOfFreedom:int) (expected:seq<float>) (observed:seq<float>) =
         let chi2 =
             Seq.zip observed expected

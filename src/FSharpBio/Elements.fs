@@ -108,7 +108,7 @@ module Elements =
         | Tri   {X = x} -> x
         | Multi {X = x} -> x
 
-    
+    // Single term of equation. (10)
     let getSinglePhiL (elem:Element) (v:float) (l:float) =
         match elem with
         | Mono  {Root = r}     -> v * r**(- l)
@@ -122,9 +122,9 @@ module Elements =
     
     let getSinglePhiM (elem:Element) (v:float) (l:float) =
         match elem with
-        | Mono  {Root = r; X = x}           -> v * r**(- l)
-        | Di    {Root = r; X = x; X1 = x1}  -> let massCoef = x.Mass / x1.Mass //* - 1.        
-                                               let root = -1. * ((x.Mass * x.NatAbundance) / (x1.Mass * x1.NatAbundance))
+        | Mono  {Root = r; X = x}           -> v * (x.NatAbundance*x.Mass)**(- l)
+        | Di    {Root = r; X = x; X1 = x1}  -> //let massCoef = x.Mass / x1.Mass //* - 1.        
+                                               let root = -1. * (x.Mass * x.NatAbundance) / (x1.Mass * x1.NatAbundance)
                                                v  * (root)**(- l)// * massCoef**(-l)
                                                
         | Tri   {Root = r0,r1} -> let cv  = complex v 0.       

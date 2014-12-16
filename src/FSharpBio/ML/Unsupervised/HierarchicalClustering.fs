@@ -100,7 +100,12 @@ module HierarchicalClustering =
     let createClusterValue (id:int) (value:'T) =
         Cluster.Leaf(id,1,value)
 
-
+    
+    /// Returns cluster id and value pair (only from leafs)
+    let tryGetKeyValuePair (c:Cluster<'T>) =
+        match c with    
+        | Cluster.Leaf(id,_,v) -> Some (id,v)
+        | _                    -> None    
 
 
 
@@ -167,19 +172,30 @@ module HierarchicalClustering =
         
         //#region Cluster Helper       
         // Removes cluster from list
+//        let removeCluster (inputList:Cluster<'T> list) (c1:Cluster<'T>) (c2:Cluster<'T>) = 
+//            let idC1 = getClusterId c1
+//            let idC2 = getClusterId c2
+//            let rec remove (inputL:Cluster<'T> list) acc =
+//                match inputL with
+//                | head::tail -> let idH = getClusterId head
+//                                if idH = idC1 || idH = idC2 then
+//                                    remove tail acc
+//                                else
+//                                    remove tail (head::acc)
+//                | []        -> acc |> List.rev
+//            remove inputList []
+
         let removeCluster (inputList:Cluster<'T> list) (c1:Cluster<'T>) (c2:Cluster<'T>) = 
-            let idC1 = getClusterId c1
-            let idC2 = getClusterId c2
-            let rec remove (inputL:Cluster<'T> list) acc =
+//            let idC1 = getClusterId c1
+//            let idC2 = getClusterId c2
+            let rec remove (inputL:Cluster<'T> list) idC1 idC2 =
+                printfn "-> %i" inputL.Length
                 match inputL with
                 | head::tail -> let idH = getClusterId head
-                                if idH = idC1 || idH = idC2 then
-                                    remove tail acc
-                                else
-                                    remove tail (head::acc)
-                | []        -> acc |> List.rev
-            remove inputList []
-             
+                                if (idH = idC1 || idH = idC2) then tail else head::(remove tail idC1 idC2)  
+                | [] -> failwith "item not in list"
+
+            (remove inputList (getClusterId c1) (getClusterId c2))
               
         // Finds cluster pair with min distance
         let findMinDinstancePair (cachedDist:DistanceCaching<'T>) (inputList:Cluster<'T> list) =    

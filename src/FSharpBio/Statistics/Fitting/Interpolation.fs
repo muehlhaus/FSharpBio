@@ -10,7 +10,7 @@ module InterPolation =
             a
             |> Array.mapi (fun i x -> if(System.Double.IsNaN(x)) then nan else float(i))
             |> Array.filter(fun x -> not (System.Double.IsNaN(x)))
-        let interPol = MathNet.Numerics.Interpolation.Algorithms.AkimaSplineInterpolation(achses,samples)
+        let interPol = MathNet.Numerics.Interpolation.CubicSpline.InterpolateAkima(achses,samples)
         a
         |> Array.mapi (fun i x -> if(System.Double.IsNaN(x)) then interPol.Interpolate(float(i)) else x)
 
@@ -21,7 +21,7 @@ module InterPolation =
             a
             |> Array.mapi (fun i x -> if(System.Double.IsNaN(x)) then nan else float(i))
             |> Array.filter(fun x -> not (System.Double.IsNaN(x)))
-        let interPol = MathNet.Numerics.Interpolation.Algorithms.FloaterHormannRationalInterpolation(achses,samples)
+        let interPol = MathNet.Numerics.Interpolation.Barycentric.InterpolateRationalFloaterHormann(achses,samples)
         a
         |> Array.mapi (fun i x -> if(System.Double.IsNaN(x)) then interPol.Interpolate(float(i)) else x)
         
@@ -32,7 +32,7 @@ module InterPolation =
             a
             |> Array.mapi (fun i x -> if(System.Double.IsNaN(x)) then nan else float(i))
             |> Array.filter(fun x -> not (System.Double.IsNaN(x)))
-        let interPol = MathNet.Numerics.Interpolation.Algorithms.LinearSplineInterpolation(achses,samples)
+        let interPol = MathNet.Numerics.Interpolation.LinearSpline.Interpolate(achses,samples)
         a
         |> Array.mapi (fun i x -> if(System.Double.IsNaN(x)) then interPol.Interpolate(float(i)) else x)
 

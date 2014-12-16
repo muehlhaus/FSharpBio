@@ -52,8 +52,10 @@
     <Compile Include="JaggedArray.fs" />
     <Compile Include="List.fs" />
     <Compile Include="Map.fs" />
+    <Compile Include="MultiMap.fs" />
     <Compile Include="Math.fs" />
     <Compile Include="PSeq.fs" />
+    <Compile Include="Regex.fs" />
     <Compile Include="Seq.fs" />
     <Compile Include="String.fs" />
     <Compile Include="Tree.fs" />

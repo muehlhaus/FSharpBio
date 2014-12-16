@@ -85,8 +85,8 @@ module Correlation =
             let pseudoZs = pseudoCfs |> Seq.map (fun pcf -> (nz - ((n-1.)*(transformFisherHotellingZ pcf (n-1.)))) )
             let pseudoZ  = pseudoZs |> StatisticalMeasure.NaN.median
             let pseudoZStd =sqrt ((pseudoZs |> StatisticalMeasure.NaN.stDevPopulation) / (n-1.))
-            let StudentT = new MathNet.Numerics.Distributions.StudentT()
-            StudentT.DegreesOfFreedom <- (n-1.)
+            let StudentT = new MathNet.Numerics.Distributions.StudentT(0.0,1.0,(n-1.))
+            //StudentT.DegreesOfFreedom <- (n-1.)
             //{ Coefficient = cf; PValue = 1.-StudentT.CumulativeDistribution(pseudoZ/pseudoZStd); ZValue = (transformFisherZ cf) }
             //{ Coefficient = cf; PValue = (pseudoZStd); ZValue = (transformFisherHotellingZ cf n) }
             //pseudoCfs

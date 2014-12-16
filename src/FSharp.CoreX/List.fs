@@ -77,6 +77,57 @@ module List =
         outerLoop input []
 
 
+    // Example:
+    // applyEachPairwise (+) ["A";"B";"C";"D";] --> ["AB"; "AC"; "AD"; "BC"; "BD"; "CD"]
+    /// Applies function f two each unique compination of items in list 
+    let applyEachPairwise (f: 'a -> 'a -> 'b ) (l : 'a list) =
+        let rec innerLoop hh ll acc =
+            match ll with
+            | h::ll -> innerLoop hh ll ((f hh h)::acc)
+            | []    -> acc 
+        let rec loop l' acc =
+            match l' with
+            | h::tail -> loop tail (innerLoop h tail acc)
+            | []      -> acc |> List.rev
+        loop l []
+
+
+    // Example:
+    // applyEachPairwiseWith (+) ["A";"B";"C";"D";] --> ["AA"; "AB"; "AC"; "AD"; "BB"; "BC"; "BD"; "CC"; "CD"; "DD"]
+    /// Applies function f two each unique compination of items in list 
+    let applyEachPairwiseWith (f: 'a -> 'a -> 'b ) (l : 'a list) =
+        let rec innerLoop hh ll acc =
+            match ll with
+            | h::ll -> innerLoop hh ll ((f hh h)::acc)
+            | []    -> acc 
+        let rec loop l' acc =
+            match l' with
+            | h::tail -> loop tail (innerLoop h l' acc)
+            | []      -> acc |> List.rev
+        loop l []
+
+
+    /// Removes an element from a list at a given index
+    /// (Not recommended list opperation)
+    let removeAt index input =
+      input 
+      // Associate each element with a boolean flag specifying whether 
+      // we want to keep the element in the resulting list
+      |> List.mapi (fun i el -> (i <> index, el)) 
+      // Remove elements for which the flag is 'false' and drop the flags
+      |> List.filter fst |> List.map snd
+
+
+    /// Inserts an element into a list at a given index
+    /// (Not recommended list opperation)
+    let insertAt index newEl input =
+      // For each element, we generate a list of elements that should
+      // replace the original one - either singleton list or two elements
+      // for the specified index
+      input |> List.mapi (fun i el -> if i = index then [newEl; el] else [el])
+            |> List.concat
+
+
 // ########################################
 // Static extensions
 

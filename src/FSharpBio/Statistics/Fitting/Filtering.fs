@@ -21,7 +21,7 @@ module Filtering =
     let ButterworthFilter  (sampleFrequency : float) (order : int) (f0 : float) (dcGain : float) (signal:seq<float>) =
         
         let signalFFT = toComplexFloatArray signal
-        MathNet.Numerics.IntegralTransforms.Transform.FourierForward(signalFFT)
+        MathNet.Numerics.IntegralTransforms.Fourier.Forward signalFFT
   
         let n       = signalFFT.Length       
         let numBins = float n / 2.  // Half the length of the FFT by symmetry
@@ -34,7 +34,7 @@ module Filtering =
             signalFFT.[n - i] <- signalFFT.[n - i] * gain
 
         // Reverse filtered signal
-        MathNet.Numerics.IntegralTransforms.Transform.FourierInverse(signalFFT)
+        MathNet.Numerics.IntegralTransforms.Fourier.Inverse signalFFT
         signalFFT |> fromComplexFloatArray
         
     
