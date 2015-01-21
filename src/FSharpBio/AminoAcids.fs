@@ -174,6 +174,15 @@ module AminoAcids =
         | AminoAcid.Both (a,i,m)   -> i.Label (Formula.add (Formula.substract (Propteries.formula a) minus) (ModificationInfo.formula m))
 
         
+    /// Sets an isotopic label 
+    let setIsotopicLabel (i:IsotopicLabels.IsotopicLabel) (a:AminoAcid) =
+        match a with
+        | AminoAcid.Literal (a)    -> AminoAcid.Isotopic (a,i)
+        | AminoAcid.Isotopic (a,_) -> AminoAcid.Isotopic (a,i)
+        | AminoAcid.Modified (a,m) -> AminoAcid.Both (a,i,m)
+        | AminoAcid.Both (a,_,m)   -> AminoAcid.Both (a,i,m)
+
+    
     /// Returns isotopic label of amino acid as optional
     let isotopicLabel (a:AminoAcid) = 
         match a with
@@ -227,7 +236,13 @@ module AminoAcids =
         |> Formula.monoisoMass
 
             
-            
+    /// Returns monoisotopic mass difference due to modification and label
+    let monoisoMassDiff (a:AminoAcid) =
+        match a with 
+        | AminoAcid.Literal (_) -> 0.0
+        | _                     -> let litMass =  a |> toLiteral |> AminoAcid.Literal  |> formula |> Formula.monoisoMass
+                                   let modMass = a |> formula   |> Formula.monoisoMass 
+                                   modMass - litMass
             
             
                  

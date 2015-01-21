@@ -80,6 +80,19 @@ module BioSequences =
         bs |> Seq.fold (fun acc item -> Formula.add acc  (BioItem.formula item)) Formula.emptyFormula
         
 
+
+    /// Returns string of one-letter-code with modifications and label
+    /// representation equivalent to ABSciex protein pilot software
+    let toStringProteinPilot (bs:BioSeq<_>) =
+        let getString (b:#IBioItem) =            
+            match box b with
+            | :? AminoAcids.AminoAcid     as a -> let massDiffInt = AminoAcids.monoisoMassDiff a |> round |> int                                                   
+                                                  sprintf "%c[%0+3i]" (AminoAcids.toChar a) massDiffInt
+            | :? Nucleotides.INucleotides as n -> sprintf "%c" (BioItem.symbol n)
+            | _                                -> failwithf "Type is unknown: %A" b
+
+        new string [|for c in bs  do yield! (getString c)|]  
+
 //    /// Returns average mass of AminoAcidSequence including H20
 //    let averageMass (aas:AminoAcidSequence) =
 //        Formula.averageMass (toFormula aas)

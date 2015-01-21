@@ -30,23 +30,6 @@ open FSharpBio.BioSequences
 
 
 
-//#if INTERACTIVE
-//    module InstallFsiAutoDisplay =
-//        // Single
-//        fsi.AddPrinter( fun (nuc:Nucleotides.Nucleotide) -> (Nucleotides.symbol nuc).ToString() )
-//        fsi.AddPrinter( fun (aa:AminoAcids.AminoAcid)    -> (AminoAcids.symbol aa).ToString() )
-//    
-//        // Sequences
-//        fsi.AddPrinter( fun (bs:BioSequences.BioSeq<_>)                -> BioSequences.toString bs )
-//
-//        // other
-//        fsi.AddPrinter( fun (forumla:Formula.Formula) -> Formula.toString forumla )
-//    
-//
-//#endif
-
-
-
 
 
 (**
@@ -55,8 +38,47 @@ Converting a peptide string to a bio sequence
 
 **)
 
+let peptide = 
+    "REYAHMIGMEYDTVQK"
+    |> BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoAcid
 
 
+let peptide_15N =
+    peptide
+    |> Seq.map (fun acc -> AminoAcids.setIsotopicLabel IsotopicLabels.Table.N15_Label acc)
+    |> fun a -> BioSequences.BioSeq<AminoAcids.AminoAcid>(a)
+
+BioSequences.toStringProteinPilot peptide_15N
+
+
+Mz.Fragmentation.abcSeries (peptide_15N |> List.ofSeq)
+
+
+//let lSeq = 
+//        seq
+//        |> BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoAcid
+//        |> Seq.map (fun acc -> AminoAcids.setIsotopicLabel IsotopicLabels.Table.N15_Label acc)
+//        |> fun a -> BioSequences.BioSeq<AminoAcids.AminoAcid>(a)
+
+
+
+let getFragmentMz frg_type frg_nr frg_z sequence =
+    let l = sequence |> List.ofSeq
+    match frg_type with
+    | 'b' -> Mz.Fragmentation.abcSeries l
+             |> Seq.nth (frg_nr - 1) 
+    | 'y' -> Mz.Fragmentation.xyzSeries l
+             |> Seq.nth (l.Length - frg_nr )
+    | _   -> failwithf "Fragment type unknown. %c" frg_type
+    
+    |> fun (_,f,_) -> Mz.Mass.toMZ f (float frg_z)
+
+
+getFragmentMz 'y' 6 1 peptide_15N
+getFragmentMz 'y' 6 1 peptide
+
+
+Mz.Fragmentation.xyzSeries (peptide |> List.ofSeq) 
 
 //(hash AminoAcidLiteral.Arg) ^^^ (hash AminoAcidLiteral.Arg)
 //
@@ -77,11 +99,11 @@ Converting a peptide string to a bio sequence
 
 
 
-hashAacLiteralSeq [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
-let a = [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
-let b = [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
-a.GetHashCode()
-b.GetHashCode()
+//hashAacLiteralSeq [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
+//let a = [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
+//let b = [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
+//a.GetHashCode()
+//b.GetHashCode()
 
 
 //let amino1 = 
