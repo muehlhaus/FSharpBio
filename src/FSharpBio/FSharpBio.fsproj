@@ -109,6 +109,7 @@
     <Compile Include="BioItem.fs" />
     <Compile Include="BioSequences.fs" />
     <Compile Include="IO\FileIO.fs" />
+    <Compile Include="IO\ODataIO.fs" />
     <Compile Include="IO\SchemaReader.fs" />
     <Compile Include="IO\SeqIO.fs" />
     <Compile Include="IO\FastA.fs" />
@@ -147,8 +148,14 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Numerics" />
     <ProjectReference Include="..\FSharp.CoreX\FSharp.CoreX.fsproj">
       <Name>FSharp.CoreX</Name>

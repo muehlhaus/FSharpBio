@@ -1,61 +1,106 @@
-﻿namespace FSharpBio.IO.WebServices.MzRemote
+﻿namespace FSharpBio.IO.WebServices
+
 
 module MzRemote =
-    
-    let a = 0
 
-//    open System
-//    open System.Net.Http    
-//    open System.Collections.Generic
-//    open FSharp.Data
-//    open FSharp.Data.JsonExtensions   
-//    open FSharpBio.Mz.Spectra
-//    
-//    type MZFragment = {RawFile:string; SpectrumID:string; PeakIndex:int; Mass:float; Intensity:float}    
-//
-//    let loginAsync(loginUri:string) (user:string) (password:string) =
-//        async {
-//            let requestHandler = new WebRequestHandler();
-//            requestHandler.UseCookies <- true;
-//            let client = new HttpClient(requestHandler)
-//            client.BaseAddress <- new Uri(loginUri)
-//            let loginData = [ new KeyValuePair<string, string>("UserName", user); new KeyValuePair<string, string>("Password", password)  ]
-//            let content = new FormUrlEncodedContent(loginData);
-//            let! response = client.PostAsync("/MzRemoteApi/Login", content) |> Async.AwaitTask
-//            response.EnsureSuccessStatusCode() |> ignore
-//            return client
-//        }
-//
-//    let getAsync (httpClient:HttpClient) (url:string) = 
-//        async {            
-//            let! response = httpClient.GetAsync(url) |> Async.AwaitTask
-//            response.EnsureSuccessStatusCode() |> ignore
-//            let! content = response.Content.ReadAsStringAsync() |> Async.AwaitTask
-//            return content
-//        }
-//
-//    // http://localhost:3391/OData/GetSpectrumHeaders(rawFileID=19e3ca87-e3d0-4509-bbc3-dbad065d7030)?$skip=0&$top=50&$expand=MZFragments,PrecursorInfo
-//    let spectraHeaderODataUri(rawFileID:Guid) (skip:int) (top:int) =
-//        sprintf "OData/GetSpectrumHeaders(rawFileID=%s)?$skip=%i&$top=%i&$expand=PrecursorInfo" (rawFileID.ToString()) skip top
-//        
-//    // http://localhost:3391/OData/GetMZData(rawFileID=19e3ca87-e3d0-4509-bbc3-dbad065d7030, spectrumID='0_0_0')
-//    let mzDataODataUri(rawFileID:Guid) (spectrumID:string) =
-//        sprintf "OData/GetMZData(rawFileID=%s,spectrumID='%s')" (rawFileID.ToString()) spectrumID
-//
-//    let getSpectraHeaderContentAsync(httpClient:HttpClient) (rawFileID:Guid) (skip:int) (top:int) =
-//        async {            
-//            let uri = spectraHeaderODataUri rawFileID skip top
-//            let! content = getAsync httpClient uri 
-//            return content             
-//        }
-//
-//    let getMZDataContentAsync(httpClient:HttpClient) (rawFileID:Guid) (spectrumID:string) =
-//        async {            
-//            let uri = mzDataODataUri rawFileID spectrumID
-//            let! content = getAsync httpClient uri 
-//            return content             
-//        }
-//
+    open System
+    open System.Net.Http
+    open FSharpBio.IO.ODataIO
+       
+
+
+
+    type WebReaderCredentials = {UserName:string; Password:string}
+
+    type RawFile = 
+        { ID : System.Guid
+          Name : string
+          path : string
+          UserID : string
+          RawFileFormat : string
+          DateCreated : DateTime      
+          RawHash : System.Guid
+        }
+
+    
+    //type MZFragment = {RawFile:string; SpectrumID:string; PeakIndex:int; Mass:float; Intensity:float}    
+    type MZFragment = { Mass:float; Intensity:float}    
+
+    type PrecursorInfo =
+        {  IsolationWindowTargetMz : float
+           IsolationWindowLowerOffset : float
+           IsolationWindowUpperOffset : float
+           DissociationMethod : string
+           ChargeState : int
+        }
+
+    type SpectumHeader =
+        { RawFile                : string
+          SpectrumID             : string
+          SpectrumRepresentation : string
+          MSLevel                : int
+          ScanPolarity           : string
+          RetentionTime          : float
+          PrecursorInfo          : PrecursorInfo
+        }
+
+
+
+
+    // #baseUri#/OData/GetSpectrumHeaders(rawFileID=19e3ca87-e3d0-4509-bbc3-dbad065d7030)?$skip=0&$top=50&$expand=MZFragments,PrecursorInfo
+    let private spectraHeaderODataUri(rawFileID:Guid) (skip:int) (top:int) =
+        sprintf "OData/GetSpectrumHeaders(rawFileID=%s)?$skip=%i&$top=%i&$expand=PrecursorInfo" (rawFileID.ToString()) skip top
+        
+    // #baseUri#/OData/GetMZData(rawFileID=19e3ca87-e3d0-4509-bbc3-dbad065d7030, spectrumID='0_0_0')
+    let private mzFragmentDataODataUri(rawFileID:Guid) (spectrumID:string) =
+        sprintf "OData/GetMZData(rawFileID=%s,spectrumID='%s')" (rawFileID.ToString()) spectrumID
+
+    // #baseUri#/OData/RawFiles
+    let private rawFilesUri = "OData/RawFiles"
+
+    
+    /// Gets 
+    let getRawfilesContentAsync(httpClient:HttpClient) =
+        async {            
+            let uri = rawFilesUri
+            let! content = getODataResponseAsync<list<RawFile>> httpClient uri 
+            return content.Value             
+        }
+
+
+    let getSpectraHeaderContentAsync(httpClient:HttpClient) (rawFileID:Guid) (skip:int) (top:int) =
+        async {            
+            let uri = spectraHeaderODataUri rawFileID skip top
+            let! content = getODataResponseAsync<list<SpectumHeader>> httpClient uri 
+            return content.Value             
+        }
+
+
+
+    let getMZFragmentsAsync(httpClient:HttpClient) (rawFileID:Guid) (spectrumID:string) =
+        async {            
+            let uri = mzFragmentDataODataUri rawFileID spectrumID
+            let! content = getODataResponseAsync<list<MZFragment>> httpClient uri 
+            return content.Value
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/// +++++++++++++++++++++++
+// ---> old
+
 //    let createPrecursorInfo(record:JsonValue) =
 //        match record with 
 //        | JsonValue.Null -> Unchecked.defaultof<PrecursorInfo>
@@ -129,7 +174,7 @@ module MzRemote =
 //
 //        }
 //
-//    type WebReaderCredentials = {UserName:string; Password:string}
+//    
 //
 //    type WebRawFileReader(baseUri:string, rawFileID:Guid, credentials:WebReaderCredentials) = class 
 //        let mutable httpClient = Unchecked.defaultof<HttpClient>        
