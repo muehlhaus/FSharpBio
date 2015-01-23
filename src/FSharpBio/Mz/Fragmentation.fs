@@ -11,7 +11,7 @@ module Fragmentation =
     ///   Computes uncharged mass series of a-,b-,c- ions
     /// </summary>
     ///
-    /// <param name="aal">list of aminoacids/param>
+    /// <param name="aal">list of aminoacids </param>
     /// <remarks>result is uncharged use <c>Mass.toMZ</c></remarks>
     /// <returns>uncharged mass series of a-,b-,c- ions</returns>   
     let abcSeries  (aal:AminoAcids.AminoAcid list) =    

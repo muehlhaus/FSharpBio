@@ -49,10 +49,11 @@ module SchemaReader =
     let defaultTypeConverter _type =
         match _type with
         | t when t = typeof<float>              -> Converter.Single (String.tryParseFloatDefault nan >> box)
-        | t when t = typeof<int>                -> Converter.Single (String.tryParseIntDefault -1 >> box)
+        | t when t = typeof<int>                -> Converter.Single (String.tryParseIntDefault -1 >> box)        
         | t when t = typeof<string>             -> Converter.Single (fun(s:string) -> box s)
         | t when t = typeof<bool>               -> Converter.Single (String.tryParseBoolDefault false >> box)        
         | t when t = typeof<Guid>               -> Converter.Single (String.tryParseGuidDefault Guid.Empty >> box)
+        | t when t = typeof<char>               -> Converter.Single (String.tryParseCharDefault ' ' >> box)
         ///| t when t = typeof<float[]>         -> Converter.Collection (fun (strs:seq<string>) -> (strs |> Seq.map (fun s -> Strings.tryParseFloatDefault nan s) |> Seq.toArray ) |> box )
         | t -> failwithf "Default type converter: Unknown type %A" t 
 

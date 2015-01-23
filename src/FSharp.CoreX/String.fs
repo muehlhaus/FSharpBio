@@ -152,17 +152,25 @@ module String =
         | (true,i) -> i
         | _ -> defaultValue
 
-    /// Try to parse int else return default value    
+    /// Try to parse float else return default value    
     let tryParseFloatDefault defaultValue str =
         match System.Double.TryParse(str) with
         | (true,double) -> double
         | _ -> defaultValue
 
-    /// Try to parse int else return default value    
+    /// Try to parse GUID else return default value    
     let tryParseGuidDefault defaultValue str =
         match System.Guid.TryParse(str) with
         | (true,guid) -> guid
         | _ -> defaultValue
+
+    /// Try to parse char else return default value    
+    let tryParseCharDefault defaultValue str =
+        match System.Char.TryParse(str) with
+        | (true,c) -> c
+        | _ -> defaultValue
+
+
 
     /// Checks whether the string is a boolean value
     let isBool (s:string) =
