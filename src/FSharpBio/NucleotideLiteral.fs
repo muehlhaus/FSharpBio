@@ -237,34 +237,6 @@ module NucleotideLiteral =
                     ((G,G,G), AminoAcidLiteral.Gly); ] |> Map.ofSeq
                     
 
-    /// Codon to AminoAcid 
-    let AmbiguousCodonMap = 
-                   [((G,C,N), AminoAcidLiteral.Ala);
-                    ((C,G,N), AminoAcidLiteral.Arg);
-                    ((M,G,R), AminoAcidLiteral.Arg);
-
-                    ((A,A,Y), AminoAcidLiteral.Asn);
-                    ((G,A,Y), AminoAcidLiteral.Asp);
-                    ((U,G,Y), AminoAcidLiteral.Cys);
-                    ((C,A,R), AminoAcidLiteral.Cys);
-                    ((G,A,R), AminoAcidLiteral.Glu);
-                    ((G,G,N), AminoAcidLiteral.Gly);
-                    ((C,A,Y), AminoAcidLiteral.His);
-                    ((A,U,H), AminoAcidLiteral.Ile);
-                    ((Y,U,R), AminoAcidLiteral.Leu);
-                    ((C,U,N), AminoAcidLiteral.Leu);                    
-                    ((A,A,R), AminoAcidLiteral.Lys);
-                    ((U,U,Y), AminoAcidLiteral.Phe);
-                    ((C,C,N), AminoAcidLiteral.Pro);
-                    ((U,C,N), AminoAcidLiteral.Ser);
-                    ((A,G,Y), AminoAcidLiteral.Ser);
-                    ((A,C,N), AminoAcidLiteral.Thr);
-                    ((U,A,Y), AminoAcidLiteral.Tyr);                    
-                    ((G,U,N), AminoAcidLiteral.Val);
-
-                    ((U,A,R), AminoAcidLiteral.Ter);
-                    ((U,R,A), AminoAcidLiteral.Ter); ] |> Map.ofSeq
-
 
     /// <summary>
     /// Lookup an amino acid based on a triplet of nucleotides. U U U for instance

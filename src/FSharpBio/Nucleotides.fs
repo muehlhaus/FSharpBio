@@ -25,12 +25,7 @@ module Nucleotides =
             member this.Symbol    = this |> Nucleotide.getLiteral  |> Properties.symbol
             member this.ByteCode  = this |> Nucleotide.getLiteral  |> Properties.symbol |> byte
             member this.Formula   = this |> Nucleotide.getLiteral  |> Properties.formula
-            member this.isTerminator = match (Nucleotide.getLiteral this) with
-                                       | NucleotideLiteral.Ter -> true
-                                       | _                     -> false
-            member this.isGap        = match (Nucleotide.getLiteral this) with
-                                       | NucleotideLiteral.Gap -> true
-                                       | _                     -> false
+
             
     
     /// 
@@ -53,11 +48,3 @@ module Nucleotides =
     /// Returns the symbol of Nucleotide
     let toChar (nuc:Nucleotide) = 
         symbol nuc
-
-    /// Returns true if nucleotide literal is terminator
-    let isTerminator (nuc:Nucleotide) = 
-        (nuc:>IBioItem).isTerminator
-
-    /// Returns true if nucleotide literal is gap
-    let isGap (nuc:Nucleotide) = 
-        (nuc:>IBioItem).isGap
