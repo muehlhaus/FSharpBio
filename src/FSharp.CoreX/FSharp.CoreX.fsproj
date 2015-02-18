@@ -47,6 +47,7 @@
     <Compile Include="AdjacencyGraph.fs" />
     <Compile Include="Array.fs" />
     <Compile Include="Array2D.fs" />
+    <Compile Include="Colors.fs" />
     <Compile Include="Guid.fs" />
     <Compile Include="Interop.fs" />
     <Compile Include="JaggedArray.fs" />
