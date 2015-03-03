@@ -28,11 +28,28 @@ let rawFiles        = MzRemote.getRawfilesContentAsync lg |> Async.RunSynchronou
 
 let rawFileId = rawFiles |> Seq.nth 2 |> fun r -> r.ID
 
-let spectrumHeader = MzRemote.getSpectraHeaderContentAsync lg rawFileId 1 10 |> Async.RunSynchronously
+let spectrumHeader = MzRemote.getSpectraHeaderContentAsync lg rawFileId 1250 1300 |> Async.RunSynchronously
 
-let mzFragments    = MzRemote.getMZFragmentsAsync lg rawFileId "scan=1" |> Async.RunSynchronously
+let mzFragments    = MzRemote.getMZFragmentsAsync lg rawFileId "0_0_1296" |> Async.RunSynchronously |> Seq.filter (fun mzF -> mzF.Mass > 375. && mzF.Mass < 376. )
+
+
+
 
 
 open FSharp.Charting
 
-Chart.Point(mzFragments |> List.map (fun peak -> peak.Mass,peak.Intensity)) |> Chart.ShowChart
+Chart.Point(mzFragments |> Seq.map (fun peak -> peak.Mass,peak.Intensity)) |> Chart.ShowChart
+
+
+
+//centroid 
+let byCenterOfGravity (minIntensity:float) (rawpeaks:seq<MzRemote.MZFragment>) =
+    
+    // Peak must be concave in the interval [i-2 .. i+2]
+    let isConcave (minIntensity:float) c cm1 cm2 cp1 cp2 = 
+        c > minIntensity && c > cm1 && c >= cp1 && cm1 > cm2 && cp1 >= cp2
+
+    2.
+
+
+

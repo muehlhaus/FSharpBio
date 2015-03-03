@@ -45,7 +45,8 @@ module MzRemote =
         }
 
 
-
+    // #baseUri#/OData/RawFiles
+    let private rawFilesUri = "OData/RawFiles"
 
     // #baseUri#/OData/GetSpectrumHeaders(rawFileID=19e3ca87-e3d0-4509-bbc3-dbad065d7030)?$skip=0&$top=50&$expand=MZFragments,PrecursorInfo
     let private spectraHeaderODataUri(rawFileID:Guid) (skip:int) (top:int) =
@@ -55,8 +56,15 @@ module MzRemote =
     let private mzFragmentDataODataUri(rawFileID:Guid) (spectrumID:string) =
         sprintf "OData/GetMZData(rawFileID=%s,spectrumID='%s')" (rawFileID.ToString()) spectrumID
 
-    // #baseUri#/OData/RawFiles
-    let private rawFilesUri = "OData/RawFiles"
+    // #baseUri#/OData/GetMZArray(rawFileID=19e3ca87-e3d0-4509-bbc3-dbad065d7030, spectrumID='0_0_0')
+    let private mzArrayODataUri(rawFileID:Guid) (spectrumID:string) =
+        sprintf "OData/GetMZArray(rawFileID=%s,spectrumID='%s')" (rawFileID.ToString()) spectrumID
+
+    // #baseUri#/OData/GetMZArrayByMassRange(rawFileID=19e3ca87-e3d0-4509-bbc3-dbad065d7030, spectrumID='0_0_0',lowMass=500, highMass=501)
+    let private mzArrayByMassRangeODataUri(rawFileID:Guid) (spectrumID:string) (lowMass:int)  (highMass:int) =
+        sprintf "OData/GetMZArrayByMassRange(rawFileID=%A,spectrumID='%s',lowMass=%i,highMass=%i)" rawFileID spectrumID lowMass highMass
+
+
 
     
     /// Gets 
@@ -86,11 +94,38 @@ module MzRemote =
 
 
 
+    let getMzArrayByMassRangeAsync(httpClient:HttpClient) (rawFileID:Guid) (spectrumID:string) (lowMass:int)  (highMass:int) =
+        async {            
+            let uri = mzArrayByMassRangeODataUri rawFileID spectrumID lowMass highMass
+            let! content = getODataResponseAsync<array<float>> httpClient uri 
+            return content.Value
+        }
 
 
+    let getMzArrayAsync(httpClient:HttpClient) (rawFileID:Guid) (spectrumID:string) =
+        async {            
+            let uri = mzArrayODataUri rawFileID spectrumID
+            let! content = getODataResponseAsync<array<float>> httpClient uri 
+            return content.Value
+        }
+
+    let private fromShrinked (arr:float[]) =     
+        Array.init (arr.Length/2) (fun i -> arr.[i*2],arr.[i*2+1])
+
+    let getMzByMassRangeAsync(httpClient:HttpClient) (rawFileID:Guid) (spectrumID:string) (lowMass:int)  (highMass:int) =
+        async {            
+            let uri = mzArrayByMassRangeODataUri rawFileID spectrumID lowMass highMass
+            let! content = getODataResponseAsync<array<float>> httpClient uri 
+            return fromShrinked content.Value
+        }
 
 
-
+    let getMzAsync(httpClient:HttpClient) (rawFileID:Guid) (spectrumID:string) =
+        async {            
+            let uri = mzArrayODataUri rawFileID spectrumID
+            let! content = getODataResponseAsync<array<float>> httpClient uri 
+            return fromShrinked content.Value
+        }
 
 
 

@@ -100,10 +100,11 @@ Mz.Fragmentation.xyzSeries (peptide |> List.ofSeq)
 
 
 //hashAacLiteralSeq [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
-//let a = [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
-//let b = [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
+let a = [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
+let b = [AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;AminoAcidLiteral.Arg;] 
 //a.GetHashCode()
 //b.GetHashCode()
+
 
 
 //let amino1 = 
@@ -118,10 +119,21 @@ let peptide2 = BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoA
 peptide1 = peptide2
 
 
-let protein = BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoAcid     """PEPTIDEKR
-PEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKR
-PEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKR
+//let protein = BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoAcid     """PEPTIDEKR
+//PEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKR
+//PEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKRPEPTIDEKR
+//"""
+
+
+let protein = BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoAcid     """MSSEKMPIETLQADEHRFAIILGAGAAGIIQGCTFIREKTLPLEEFQILERQSAFGGVWWKNTYPGAACDIPSHEYQISF
+ALNPYWSRTFAPQPEIQKYFEDVALQYELHKSTTFNTEIVEAKWDDSRLLWLVETTDLTTGDTKLWSCHVLIGALGAFTV
+PKKAPVKNVDAFKGEEWHSVDWPKNANLKGKTVAVIGTGPSACQFIPNIYPEVKSLIVYQRSPGHVLPRNDVVVGSLTKW
+MFAHIPFLMRFNRWFWMKKDEILRPRLFTVGSWLQKIVISMTRNHLYKQIKDDTLRRKLESKDVFGCKRPLMLSDYYPIF
+NNDNVELVTDSVTELTENGIKSRNTDTGEEMERETDVLIWGTGYNPVDFGLPVPTKGRSGQLLCDKYQPELFSLYGVAVD
+DFPNYFNFLGPNSSSFETSVMELFELQAHHNSIATEYLFQKNVGTFRYAIMPKEERVRSWTLSLRPGQAKLPPANPNCKS
+YYRSKIGHVYRYPYPYWQYKALIAKLDFKRDWVLLQQRIGQKEVKVLEF
 """
+
 BioSequences.toString protein
 
 
@@ -129,10 +141,16 @@ BioSequences.toString protein
 
 // Digestion
 
-let proteinDigestion = Mz.Digestion.cleave Mz.Digestion.Table.Trypsin 3 5 100 protein
+//let proteinDigestion = Mz.Digestion.cleave Mz.Digestion.Table.Trypsin 3 5 100 protein
+let proteinDigestion = Mz.Digestion.cleave Mz.Digestion.Table.Trypsin 0 0 1000 protein
 
 proteinDigestion
-|> Seq.map Mz.Mass.monoIsotopicPeptideMassFrom
+|> Seq.map Mz.Mass.monoIsotopicPeptideMassFrom |> Seq.nth 12
 
 
 proteinDigestion |> Seq.distinct |> Seq.length
+
+
+
+
+//
