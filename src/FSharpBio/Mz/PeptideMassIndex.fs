@@ -261,6 +261,9 @@ module PMI =
 
         member this.DeepDump() =
             this.DeepDumpInternal(this.Root)
+
+        member this.DeepDump'() =
+            this.DeepDumpInternal'(this.Root)
         
         member private this.DeepDumpInternal(node:MassIndexNode) =
         
@@ -268,10 +271,24 @@ module PMI =
                 for i in 0 .. node.NumberOfEntries-1 do   
                     Console.Out.WriteLine(String.Format("{0} [leaf #e={1}]", node.Entries.[i], node.NumberOfEntries))            
 
-            for i in 0 .. node.NumberOfEntries-1 do            
+            for i in 0 .. node.NumberOfChildren-1 do            
                 if (i > 0) then                
                     Console.Out.WriteLine(String.Format("{0} [inner #e={1} #c={2}]", node.Entries.[i - 1], node.NumberOfEntries, node.NumberOfChildren))                
                 this.DeepDumpInternal(this.NodeIO.DiskRead(node.Children.[i]))           
+
+        member private this.DeepDumpInternal'(node:MassIndexNode) =
+            seq { 
+            if (node.IsLeaf) then
+                for i in 0 .. node.NumberOfEntries-1 do   
+                    yield node.Entries.[i]
+                    //Console.Out.WriteLine(String.Format("{0} [leaf #e={1}]", node.Entries.[i], node.NumberOfEntries))            
+
+            for i in 0 .. node.NumberOfChildren-1 do            
+                if (i > 0) then                
+                    yield node.Entries.[i-1]
+                    
+                yield! this.DeepDumpInternal'(this.NodeIO.DiskRead(node.Children.[i]))  
+                }
 
         member this.GetCurrentDepth() =
             this.GetCurrentDepthInternal(this.Root, 1)
@@ -399,25 +416,31 @@ module PMI =
         /// <param name="key">Key to be searched.</param>
         /// <param name="results">A list to collect the results.</param>
         member private this.SearchInternal(results:List<MassIndexKey> , node:MassIndexNode, low:double, high:double) =
+            let rec loop (nodeEntries:List<MassIndexKey>) k =
+                if k > nodeEntries.Count-1 then
+                    k
+                else 
+                    let e = nodeEntries.[k]  
+                    if (e.MassKey >= low && e.MassKey <= high) then                
+                        results.Add(e)
+                        loop nodeEntries (k+1)
+                    else
+                        k
 
+//            let i = match (node.Entries |> Seq.tryFindIndex (fun e -> low > e.MassKey)) with
+//                    | Some i -> i
+//                    | None -> 0
             let mutable i = 0
+            
             while (i < node.NumberOfEntries && low > node.Entries.[i].MassKey) do
-                i<-i+1
+                i <- i+1
 
-            let mutable k = i
-
-            for x in i .. node.NumberOfEntries-1 do            
-                let e = node.Entries.[x]                
-                //Console.Out.WriteLine(e);
-                if (e.MassKey >= low && e.MassKey <= high) then                
-                    results.Add(e);  
-                    k <- x              
-//                else                
-//                    break                
+            let k = loop node.Entries i                      
             
             if (node.IsLeaf = false) then                
                 for j in i .. k do                
                     this.SearchInternal(results, this.NodeIO.DiskRead(node.Children.[j]), low, high);
+
              
              
         /// <summary>

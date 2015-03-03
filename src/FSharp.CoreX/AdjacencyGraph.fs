@@ -32,6 +32,9 @@ module Graph =
     /// Gets node from adjacencyNode
     let getNodeFromAdjacencyNode (adjNode:AdjacencyNode<_,_,_>) = fst adjNode
     
+    /// Gets node from adjacencyNode
+    let getEdgesFromAdjacencyNode (adjNode:AdjacencyNode<_,_,_>) = snd adjNode
+
     /// A Graph is a Vertex list.  The nextNode allows for consistent addressing of nodes
     // A representation of a directed graph with n vertices using an array of n lists of vertices. List i contains vertex j if there is an edge from vertex i to vertex j.
     // A weighted graph may be represented with a list of vertex/weight pairs. An undirected graph may be represented by having vertex j in the list for vertex i and vertex i in the list for vertex j.
