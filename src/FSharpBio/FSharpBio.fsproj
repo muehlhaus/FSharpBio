@@ -117,6 +117,7 @@
     <Compile Include="IO\SeqIO.fs" />
     <Compile Include="IO\FastA.fs" />
     <Compile Include="IO\Serialization.fs" />
+    <Compile Include="IO\Obo.fs" />
     <Compile Include="IO\WebServices\WebServer.fs" />
     <Compile Include="IO\WebServices\SoapUtil.fs" />
     <Compile Include="IO\WebServices\WSTargetP.fs" />
