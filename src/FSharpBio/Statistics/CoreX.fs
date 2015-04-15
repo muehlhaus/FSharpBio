@@ -139,8 +139,23 @@ module CoreX =
 
 
 [<AutoOpen>]
+module Vector = 
+    
+    open MathNet.Numerics.LinearAlgebra
+
+    /// Returns a sequence that yields sliding windows of containing elements from the input vectorl
+    /// Each window is retured as a fresh vector
+    let windowed n (source: _ Vector) =    
+        if n < 0 then invalidArg "n" "n must be a positive integer" 
+        seq { for i=0 to (source.Count - n) do
+                yield source.[i..i+n-1] }  
+
+
+[<AutoOpen>]
 module Matrix = 
     
+    open MathNet.Numerics.LinearAlgebra
+
     /// Returns an System.Collections.Generic.IEnumerable that enumerates over the rows  
     let toSeqRowWise (matrix:MathNet.Numerics.LinearAlgebra.Matrix<'T>) =
         matrix.EnumerateRows()
@@ -183,3 +198,19 @@ module Matrix =
     /// Stacks two matrices along the rows        
     let stack (upper:MathNet.Numerics.LinearAlgebra.Matrix<'T>) (lower:MathNet.Numerics.LinearAlgebra.Matrix<'T>) =
             upper.Stack(lower)
+
+
+    /// Calculates the pseudo inverse of the matrix
+    let pseudoInvers (matrix:MathNet.Numerics.LinearAlgebra.Matrix<float>) =
+        if matrix.RowCount > matrix.ColumnCount then
+            // Pseudo Inverse (A rows > columns)
+            matrix.QR().Solve(DenseMatrix.identity(matrix.RowCount))
+        else
+            // Pseudo Inverse (A rows < columns):
+            matrix.Transpose().QR().Solve(DenseMatrix.identity(matrix.ColumnCount)).Transpose()
+
+
+
+
+
+

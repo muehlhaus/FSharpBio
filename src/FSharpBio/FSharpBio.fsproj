@@ -81,18 +81,18 @@
     <Compile Include="Statistics\Fitting\Bandwidth.fs" />
     <Compile Include="Statistics\Fitting\Bootstrap.fs" />
     <Compile Include="Statistics\Fitting\CrossValidation.fs" />
-    <Compile Include="Statistics\Fitting\Filtering.fs" />
     <Compile Include="Statistics\Fitting\Interpolation.fs" />
     <Compile Include="Statistics\Fitting\KernelDensityEstimation.fs" />
     <Compile Include="Statistics\Fitting\MissingValue.fs" />
     <Compile Include="Statistics\Fitting\Regression.fs" />
     <Compile Include="Statistics\Fitting\Spline.fs" />
+    <Compile Include="Statistics\Signal\Filtering.fs" />
     <!-- ML -->
     <Compile Include="ML\Unsupervised\PrincipalComponentAnalysis.fs" />
     <Compile Include="ML\Unsupervised\DistanceMetrics.fs" />
     <Compile Include="ML\Unsupervised\IterativeClustering.fs" />
-    <Compile Include="ML\Unsupervised\HierarchicalClustering.fs" />
     <Compile Include="ML\Unsupervised\DensityClustering.fs" />
+    <Compile Include="ML\Unsupervised\HierarchicalClustering.fs" />
     <!-- Bio -->
     <Compile Include="Helper.fs" />
     <Compile Include="PhysicalConstants.fs" />
