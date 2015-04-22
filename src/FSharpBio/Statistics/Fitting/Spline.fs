@@ -21,6 +21,8 @@ module Spline =
  
     let private checkSmoothingParameter l =
         if l < 0. then failwith "smoothing parameter should be positive"
+    
+    
     /// Creates a smoothing spline through some data. Takes as spline points the x-values given by basispts
     let smoothingSpline (data: (float*float) []) (basispts : float [])=
  
