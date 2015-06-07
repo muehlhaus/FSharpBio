@@ -76,3 +76,9 @@ let fastaPath = "./Examples/Data/chlamy3proteins.fasta"
 let chlamy3proteins = FastA.fromFile (converter) fastaPath |> Seq.toArray
 // Write
 let _ = chlamy3proteins |> FastA.write converter fastaPath
+
+
+
+
+// SOAP
+

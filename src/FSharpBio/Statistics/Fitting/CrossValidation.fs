@@ -14,13 +14,13 @@ module CrossValidation =
         
 
     /// Creates a  classifiers using training sets that are bootstrapped (drawn with replacement)
-    let bagging (f: trainingFunc<'a>) xData yData nIterations (rho:'a) =
+    let bagging rnd (f: trainingFunc<'a>) xData yData nIterations (rho:'a) =
         let xyData    = Array.zip xData yData
         let bootSizeK = xyData.Length / 2
         let m         = bootSizeK *  3    
         let predY =
             [ for i = 1 to nIterations do
-                let nxData,nyData = Bootstrap.sampleWithReplacement xyData bootSizeK |> Array.unzip                
+                let nxData,nyData = Bootstrap.sampleWithReplacement rnd xyData bootSizeK |> Array.unzip                
                 let trainingF = f nxData nyData rho
                 yield (xData |> Seq.map trainingF) ]
                                                 
