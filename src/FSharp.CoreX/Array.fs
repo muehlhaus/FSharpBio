@@ -93,6 +93,21 @@ module Array =
         | false -> zero
 
 
+    /// Returns an array of sliding windows of data drawn from the source array.
+    /// Each window contains the n elements surrounding the current element.
+    let centeredWindow n (source: _ []) =    
+        if n < 0 then invalidArg "n" "n must be a positive integer"
+        let lastIndex = source.Length - 1
+    
+        let window i _ =
+            let windowStartIndex = System.Math.Max(i - n, 0)
+            let windowEndIndex = System.Math.Min(i + n, lastIndex)
+            let arrSize = windowEndIndex - windowStartIndex + 1
+            let target = Array.zeroCreate arrSize
+            Array.blit source windowStartIndex target 0 arrSize
+            target
+
+        Array.mapi window source
 
 
 // ########################################

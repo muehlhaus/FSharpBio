@@ -113,3 +113,9 @@ module MissingValue =
         m
 
 
+
+    let imputeAkima x y =
+        let x',y'  = Array.zip x y |> Array.filter (fun (x,y) ->  not (System.Double.IsNaN(y))) |> Array.unzip
+        let interPol = MathNet.Numerics.Interpolation.CubicSpline.InterpolateAkima(x',y')
+        x
+        |> Array.map (fun x -> interPol.Interpolate(x) )

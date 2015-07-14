@@ -21,6 +21,10 @@ module DistanceMetrics =
         |> Seq.sum
         |> sqrt
 
+    /// "Dissimilarity" uses 1. - pearsons correlation coefficient 
+    let dissimilarity v1 v2 =
+        FSharpBio.Statistics.Descriptive.Correlation.pearsonCorrelation v1 v2
+        |> fun cor -> 1. - cor.Coefficient
 
 
     // Levenshtein distance between strings, lifted from:

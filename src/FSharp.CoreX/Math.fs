@@ -24,7 +24,14 @@ module Math =
             (complex.Real,complex.Imaginary)
 
         
-
+        let toComplexFloatArray (data:seq<float>) =
+            data 
+            |> Seq.map toComplexFromReal
+            |> Seq.toArray
+    
+        let fromComplexFloatArray (data:System.Numerics.Complex []) =
+            data 
+            |> Array.map fromComplexReal
 
 //    /// Active pattern returns Even or Odd
 //    let inline (|Even|Odd|) (input) = if input % 2G = 0G then Even else Odd

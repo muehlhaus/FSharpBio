@@ -71,11 +71,10 @@ module HierarchicalClustering =
 
 
     // ######################        
-    /// Cluster type
+    // Cluster
     type Cluster<'T> = 
-        /// Cluster node with: ID * distance * leafCount * cluster left * cluster right
+        //------- ID * distance * leafCount * cluster left * cluster right
         | Node of int * float * int * Cluster<'T> * Cluster<'T>
-        /// Cluster leaf with: ID * leafCount * data
         | Leaf of int * int * 'T
 
     // Returns cluster Id
@@ -91,21 +90,15 @@ module HierarchicalClustering =
         | Cluster.Node(id,_,mc,_,_) -> mc   
         | Cluster.Leaf(id,mc,_)     -> mc
     
-    /// Creates a parent cluster 
+
     let createCluster<'T> (id:int) (dist:float) (left:Cluster<'T>) (right:Cluster<'T>) =        
         let leaveCount = getClusterMemberCount left + getClusterMemberCount right
         Cluster.Node(id, dist, leaveCount, left, right)
-    
-    /// Creates a cluster 
+
     let createClusterValue (id:int) (value:'T) =
         Cluster.Leaf(id,1,value)
 
-    
-    /// Returns cluster id and value pair (only from leafs)
-    let tryGetKeyValuePair (c:Cluster<'T>) =
-        match c with    
-        | Cluster.Leaf(id,_,v) -> Some (id,v)
-        | _                    -> None    
+
 
 
 
@@ -148,7 +141,6 @@ module HierarchicalClustering =
             dist
 
 
-        /// Calculates cluster distance and uses chaching 
         member this.calcDistance (c1:Cluster<'T>) (c2:Cluster<'T>) =    
             match c1,c2 with
             | Cluster.Leaf(c1Id,mc1,c1Values)   ,Cluster.Leaf(c2Id,mc2,c2Values)     -> calculateSinglePairDistance c1Id c1Values c2Id c2Values
@@ -172,30 +164,19 @@ module HierarchicalClustering =
         
         //#region Cluster Helper       
         // Removes cluster from list
-//        let removeCluster (inputList:Cluster<'T> list) (c1:Cluster<'T>) (c2:Cluster<'T>) = 
-//            let idC1 = getClusterId c1
-//            let idC2 = getClusterId c2
-//            let rec remove (inputL:Cluster<'T> list) acc =
-//                match inputL with
-//                | head::tail -> let idH = getClusterId head
-//                                if idH = idC1 || idH = idC2 then
-//                                    remove tail acc
-//                                else
-//                                    remove tail (head::acc)
-//                | []        -> acc |> List.rev
-//            remove inputList []
-
         let removeCluster (inputList:Cluster<'T> list) (c1:Cluster<'T>) (c2:Cluster<'T>) = 
-//            let idC1 = getClusterId c1
-//            let idC2 = getClusterId c2
-            let rec remove (inputL:Cluster<'T> list) idC1 idC2 =
-                printfn "-> %i" inputL.Length
+            let idC1 = getClusterId c1
+            let idC2 = getClusterId c2
+            let rec remove (inputL:Cluster<'T> list) acc =
                 match inputL with
                 | head::tail -> let idH = getClusterId head
-                                if (idH = idC1 || idH = idC2) then tail else head::(remove tail idC1 idC2)  
-                | [] -> failwith "item not in list"
-
-            (remove inputList (getClusterId c1) (getClusterId c2))
+                                if idH = idC1 || idH = idC2 then
+                                    remove tail acc
+                                else
+                                    remove tail (head::acc)
+                | []        -> acc |> List.rev
+            remove inputList []
+             
               
         // Finds cluster pair with min distance
         let findMinDinstancePair (cachedDist:DistanceCaching<'T>) (inputList:Cluster<'T> list) =    
@@ -272,8 +253,8 @@ module HierarchicalClustering =
         let toClusterList (clist: Cluster<'T> list) =
             match clist with
             | c::tail -> match c with
-                         | Node (id,dist,cM,lc,rc)  -> lc::rc::tail                                                                    
-                         | Leaf (id,_,_)            -> c::tail
+                        | Node (id,dist,cM,lc,rc)  -> lc::rc::tail                                                                    
+                        | Leaf (id,_,_)            -> c::tail
             | []      -> []
         
         let rec loop cN (clist: Cluster<'T> list) =                                             

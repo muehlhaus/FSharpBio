@@ -70,6 +70,7 @@
     <Compile Include="Statistics\Descriptive\Rank.fs" />
     <Compile Include="Statistics\Descriptive\Transform.fs" />
     <Compile Include="Statistics\Descriptive\Venn.fs" />
+    <Compile Include="Statistics\Descriptive\QuantileNorm.fs" />
     <Compile Include="Statistics\Testing\TestStatistics.fs" />
     <Compile Include="Statistics\Testing\Anova.fs" />
     <Compile Include="Statistics\Testing\TTest.fs" />
@@ -80,18 +81,20 @@
     <Compile Include="Statistics\Fitting\Bandwidth.fs" />
     <Compile Include="Statistics\Fitting\Bootstrap.fs" />
     <Compile Include="Statistics\Fitting\CrossValidation.fs" />
-    <Compile Include="Statistics\Fitting\Filtering.fs" />
     <Compile Include="Statistics\Fitting\Interpolation.fs" />
     <Compile Include="Statistics\Fitting\KernelDensityEstimation.fs" />
     <Compile Include="Statistics\Fitting\MissingValue.fs" />
     <Compile Include="Statistics\Fitting\Regression.fs" />
+    <Compile Include="Statistics\Fitting\Spline.fs" />
+    <Compile Include="Statistics\Signal\Filtering.fs" />
     <!-- ML -->
     <Compile Include="ML\Unsupervised\PrincipalComponentAnalysis.fs" />
     <Compile Include="ML\Unsupervised\DistanceMetrics.fs" />
     <Compile Include="ML\Unsupervised\IterativeClustering.fs" />
-    <Compile Include="ML\Unsupervised\HierarchicalClustering.fs" />
     <Compile Include="ML\Unsupervised\DensityClustering.fs" />
+    <Compile Include="ML\Unsupervised\HierarchicalClustering.fs" />
     <!-- Bio -->
+    <Compile Include="Helper.fs" />
     <Compile Include="PhysicalConstants.fs" />
     <Compile Include="Isotopes.fs" />
     <Compile Include="Elements.fs" />
@@ -105,37 +108,44 @@
     <Compile Include="Nucleotides.fs" />
     <Compile Include="BioItem.fs" />
     <Compile Include="BioSequences.fs" />
-    <Compile Include="Mz\Mass.fs" />
-    <Compile Include="Mz\IsotopicDistribution.fs" />
-    <Compile Include="Mz\Digestion.fs" />
-    <Compile Include="Mz\Modification.fs" />
-    <Compile Include="Ontology\GSEA.fs" />
-    <Compile Include="Ontology\SetEnrichmentAnalysis.fs" />
-    <!-- IO -->
     <Compile Include="IO\FileIO.fs" />
     <Compile Include="IO\ODataIO.fs" />
     <Compile Include="IO\SchemaReader.fs" />
     <Compile Include="IO\SeqIO.fs" />
     <Compile Include="IO\FastA.fs" />
+    <Compile Include="IO\AgilentRaw.fs" />
     <Compile Include="IO\Serialization.fs" />
-    <Compile Include="IO\Obo.fs" />
     <Compile Include="IO\WebServices\WebServer.fs" />
     <Compile Include="IO\WebServices\SoapUtil.fs" />
     <Compile Include="IO\WebServices\WSTargetP.fs" />
+    <Compile Include="IO\WebServices\MzRemote.fs" />
+    <Compile Include="Mz\Mass.fs" />
+    <Compile Include="Mz\IsotopicDistribution.fs" />
+    <Compile Include="Mz\Digestion.fs" />
+    <Compile Include="Mz\Modification.fs" />
+    <Compile Include="Mz\PeptideMassIndex.fs" />
+    <Compile Include="Mz\PeptideLookUp.fs" />
+    <Compile Include="Mz\Spectra.fs" />
+    <Compile Include="Mz\Fragmentation.fs" />
+    <Compile Include="Mz\SequestLike.fs" />
+    <Compile Include="Mz\EmpiricalTargetDecoy.fs" />
+    <Compile Include="Ontology\GSEA.fs" />
+    <Compile Include="Ontology\SetEnrichmentAnalysis.fs" />
+    <!-- IO -->
     <None Include="packages.config" />
     <None Include="app.config" />
+    <None Include="FSharpBio.fsx" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="FSharp.Core">
-      <HintPath>..\..\packages\FSharp.Core.3.1.2.1\lib\net40\FSharp.Core.dll</HintPath>
+    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
     </Reference>
     <Reference Include="MathNet.Numerics">
-      <HintPath>..\..\packages\MathNet.Numerics.3.5.0\lib\net40\MathNet.Numerics.dll</HintPath>
+      <HintPath>..\..\packages\MathNet.Numerics.3.2.3\lib\net40\MathNet.Numerics.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MathNet.Numerics.FSharp">
-      <HintPath>..\..\packages\MathNet.Numerics.FSharp.3.5.0\lib\net40\MathNet.Numerics.FSharp.dll</HintPath>
+      <HintPath>..\..\packages\MathNet.Numerics.FSharp.3.2.3\lib\net40\MathNet.Numerics.FSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />

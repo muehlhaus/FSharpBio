@@ -14,8 +14,7 @@ module CrossValidation =
         
 
     /// Creates a  classifiers using training sets that are bootstrapped (drawn with replacement)
-    let bagging (f: trainingFunc<'a>) xData yData nIterations (rho:'a) =
-        let rnd = System.Random()
+    let bagging rnd (f: trainingFunc<'a>) xData yData nIterations (rho:'a) =
         let xyData    = Array.zip xData yData
         let bootSizeK = xyData.Length / 2
         let m         = bootSizeK *  3    
