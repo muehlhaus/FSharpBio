@@ -12,7 +12,8 @@ module BioSequences =
 //        (seq { for x in ie -> unbox x }).GetEnumerator()
     
     /// Type for sequence of BioItem, Id, DisplayId and a MetaData object
-    type BioSeq<'a when 'a :> IBioItem> 
+    //[<CustomEquality; CustomComparison>]
+    type BioSeq<[<EqualityConditionalOn; ComparisonConditionalOn >]'a when 'a :> IBioItem> 
         ( sequence  : seq<'a>,
           id        : string,
           displayId : string,
@@ -23,6 +24,19 @@ module BioSequences =
         member this.DisplayId      = displayId
         
         member this.MetaData       = metadata
+
+        // 
+        override this.Equals(other) =
+            match other with
+            | :? BioSeq<'a> as o -> (Seq.compareWith Unchecked.compare this.asSeq o.asSeq) = 0
+            | _ -> false
+ 
+        override this.GetHashCode() = hash this.asSeq
+        interface System.IComparable with
+          member this.CompareTo other =
+              match other with
+              | :? BioSeq<'a> as o -> Seq.compareWith Unchecked.compare this.asSeq o.asSeq 
+              | _ -> invalidArg  "other" "cannot compare values of different types"
         
         interface IEnumerable<'a> with
                 member this.GetEnumerator() = this.asSeq.GetEnumerator()

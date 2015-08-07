@@ -42,6 +42,16 @@ let peptide =
     "REYAHMIGMEYDTVQK"
     |> BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoAcid
 
+let peptide2 = 
+    "REYAHMIGMEYDTVQK"
+    |> BioSequences.ofAminoAcidString OptionConverter.charToOptionAminoAcid
+
+Seq.compareWith (fun elem1 elem2 ->
+    if AminoAcids.isEqual elem1 elem2 then 0    
+    else 1)  peptide peptide2
+
+
+
 
 let peptide_15N =
     peptide

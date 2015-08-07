@@ -1,6 +1,7 @@
 ﻿namespace FSharpBio
 
 ///Marker interface for BioItem base.
+//[<StructuralEquality;StructuralComparison>]
 type IBioItem =    
     abstract member Name     : string
     abstract member Symbol   : char
