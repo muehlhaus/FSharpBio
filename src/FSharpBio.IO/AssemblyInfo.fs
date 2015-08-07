@@ -1,7 +1,7 @@
 ﻿namespace System
 open System.Reflection
 
-[<assembly: AssemblyTitleAttribute("FSharpBio")>]
+[<assembly: AssemblyTitleAttribute("FSharpBio.IO")>]
 [<assembly: AssemblyProductAttribute("FSharpBio")>]
 [<assembly: AssemblyDescriptionAttribute("FSharpBio aims to be a user-friendly library for Bioinformatics written in F#.")>]
 [<assembly: AssemblyVersionAttribute("1.0")>]

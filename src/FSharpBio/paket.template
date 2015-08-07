@@ -1,0 +1,23 @@
+type project
+owners
+    Timo Mühlhaus
+authors 
+    Timo Mühlhaus
+projectUrl
+    http://github.com/muehlhaus/FSharpBio
+iconUrl
+    https://raw.githubusercontent.com/muehlhaus/FSharpBio/master/docs/files/img/logo.png
+licenseUrl
+    http://github.com/muehlhaus/FSharpBio/blob/master/LICENSE.txt
+requireLicenseAcceptance
+    false
+copyright
+    Copyright 2015
+tags
+    bioinformatics computational biology
+summary
+    FSharpBio aims to be a user-friendly library for Bioinformatics written in F#.
+description
+    FSharpBio aims to be a user-friendly library for Bioinformatics written in F#.
+
+

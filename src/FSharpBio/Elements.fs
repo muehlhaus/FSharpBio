@@ -1,7 +1,8 @@
 ﻿namespace FSharpBio
 
 
-open MathNet.Numerics
+//open MathNet.Numerics
+open FSharpAux.Math
 open Isotopes
     
 
@@ -45,7 +46,7 @@ module Elements =
                            X1comp : float;
                            X2     : Isotopes.Isotope;
                            X2comp : float;                           
-                           Root   : complex*complex;
+                           Root   : System.Numerics.Complex*System.Numerics.Complex
                          }
                         
                             override x.Equals(yobj) =
@@ -64,9 +65,9 @@ module Elements =
     
     /// Calculates roots of tri-isotopic elements
     let private calcRootsTri (x1Abundance:float) (x2Abundance:float) (x3Abundance:float) =
-        let d  =  sqrt (complex (x2Abundance**2. - 4. * x1Abundance * x3Abundance) 0.)//sqrt( x2Abundance**2. - 4. * x1Abundance * x3Abundance)
-        let r0 = ((complex (- x2Abundance) 0.) + d) / (complex (2. * x3Abundance) 0.)
-        let r1 = ((complex (- x2Abundance) 0.) - d) / (complex (2. * x3Abundance) 0.)
+        let d  =  sqrt (Complex.toComplex (x2Abundance**2. - 4. * x1Abundance * x3Abundance) 0.)//sqrt( x2Abundance**2. - 4. * x1Abundance * x3Abundance)
+        let r0 = ((Complex.toComplex (- x2Abundance) 0.) + d) / (Complex.toComplex (2. * x3Abundance) 0.)
+        let r1 = ((Complex.toComplex (- x2Abundance) 0.) - d) / (Complex.toComplex (2. * x3Abundance) 0.)
         (r0,r1)
 
     /// Create a three-isotopic element
@@ -113,9 +114,9 @@ module Elements =
         match elem with
         | Mono  {Root = r}     -> v * r**(- l)
         | Di    {Root = r}     -> v * r**(- l)
-        | Tri   {Root = r0,r1} -> let cv  = complex v 0.       
-                                  let r0c = complex r0.Real r0.Imaginary
-                                  let r1c = complex r1.Real r1.Imaginary
+        | Tri   {Root = r0,r1} -> let cv  = Complex.toComplex v 0.       
+                                  let r0c = Complex.toComplex r0.Real r0.Imaginary
+                                  let r1c = Complex.toComplex r1.Real r1.Imaginary
                                   ((cv * r0c**(- l)) + (cv * r1c**(- l))).Real
         | Multi {X = x} -> nan
 
@@ -127,9 +128,9 @@ module Elements =
                                                let root = -1. * (x.Mass * x.NatAbundance) / (x1.Mass * x1.NatAbundance)
                                                v  * (root)**(- l)// * massCoef**(-l)
                                                
-        | Tri   {Root = r0,r1} -> let cv  = complex v 0.       
-                                  let r0c = complex r0.Real r0.Imaginary
-                                  let r1c = complex r1.Real r1.Imaginary
+        | Tri   {Root = r0,r1} -> let cv  = Complex.toComplex v 0.       
+                                  let r0c = Complex.toComplex r0.Real r0.Imaginary
+                                  let r1c = Complex.toComplex r1.Real r1.Imaginary
                                   ((cv * r0c**(- l)) + (cv * r1c**(- l))).Real
         | Multi {X = x} -> nan
 

@@ -6,7 +6,7 @@ module ChartingX =
 
     open FSharp.Charting
     open FSharp.Charting.ChartTypes        
-    open FSharp.CoreX
+    open FSharpAux
 
     module ChartTypes = 
         

@@ -1,15 +1,9 @@
-﻿namespace Fsharp.Bio
+﻿namespace FSharpBio
 
 module Mass =
     
-    let CO  = Formula.parseFormulaString "CO"
-    let CO2 = Formula.parseFormulaString "CO2"
-    let OH  = Formula.parseFormulaString "OH"  //
-    let H2O = Formula.parseFormulaString "H2O"
-    let NH  = Formula.parseFormulaString "NH"  //
-    let NH2 = Formula.parseFormulaString "NH2"
-    let NH3 = Formula.parseFormulaString "NH3"
-    
+    open FSharpBio
+   
     let protonMass =  1.00727646677 // Wiki: 1,007 276 466 812(90) u
 
     /// <summary>
@@ -46,4 +40,16 @@ module Mass =
     let rangePpm ppm mass =
         let deltaM = deltaMassByPpm ppm mass
         (mass - deltaM,mass + deltaM)
+
+
+//    /// Calculates the monoisotopic pepitde mass (including H2O)
+//    let monoIsotopicPeptideMassFrom (aas:FSharpBio.BioSequences.AminoAcidSeq<_>) =
+//        Formula.add (BioSequences.toFormula aas) Formula.Table.H2O
+//        |> Formula.monoisoMass
+//
+//
+//    /// Calculates the average pepitde mass (including H2O)
+//    let averagePeptideMassFrom (aas:FSharpBio.BioSequences.AminoAcidSeq<_>) =
+//        Formula.add (BioSequences.toFormula aas) Formula.Table.H2O
+//        |> Formula.averageMass
 

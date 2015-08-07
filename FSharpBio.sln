@@ -1,26 +1,26 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1F1B4F0F-2998-4D74-865B-9122611C2B14}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{63297B98-5CED-492C-A5B7-A5B4F73CF142}"
 	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
+		paket.dependencies = paket.dependencies
+		paket.lock = paket.lock
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpBio", "src\FSharpBio\FSharpBio.fsproj", "{6877CA0D-6E3D-4A3F-AE7E-F5C6B8989B0B}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{BF60BC93-E09B-4E5F-9D85-95A519479D54}"
 	ProjectSection(SolutionItems) = preProject
 		build.fsx = build.fsx
-		nuget\FSharp.ProjectTemplate.nuspec = nuget\FSharp.ProjectTemplate.nuspec
 		README.md = README.md
 		RELEASE_NOTES.md = RELEASE_NOTES.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{83F16175-43B1-4C90-A1EE-8E351C33435D}"
 	ProjectSection(SolutionItems) = preProject
-		docs\tools\templates\docpage.cshtml = docs\tools\templates\docpage.cshtml
 		docs\tools\generate.fsx = docs\tools\generate.fsx
 		docs\tools\templates\template.cshtml = docs\tools\templates\template.cshtml
 	EndProjectSection
@@ -28,20 +28,23 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "content", "content", "{8E6D5255-776D-4B61-85F9-73C37AA1FB9A}"
 	ProjectSection(SolutionItems) = preProject
 		docs\content\FSharpBio.IO.fsx = docs\content\FSharpBio.IO.fsx
-		docs\content\FSharpBio.ML.fsx = docs\content\FSharpBio.ML.fsx
 		docs\content\index.fsx = docs\content\index.fsx
 		docs\content\tutorial.fsx = docs\content\tutorial.fsx
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ED8079DD-2B06-4030-9F0F-DC548F98E1C4}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpBio", "src\FSharpBio\FSharpBio.fsproj", "{F4C6F4F6-93E6-4CF5-AE0E-07884CBAE265}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpBio.Tests", "tests\FSharpBio.Tests\FSharpBio.Tests.fsproj", "{244E1538-296D-4680-9708-C1154B626DB4}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.CoreX", "src\FSharp.CoreX\FSharp.CoreX.fsproj", "{3389617E-1C1A-404F-B0CE-3EE1BE41FE1F}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpBio.IO", "src\FSharpBio.IO\FSharpBio.IO.fsproj", "{C251C382-C604-4729-B360-2B62C88FC2A8}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.CoreX.Tests", "tests\FSharp.CoreX.Tests\FSharp.CoreX.Tests.fsproj", "{3B264D95-4676-4BDB-9F52-AEE3A2DEA2C4}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpBio.Mz", "src\FSharpBio.Mz\FSharpBio.Mz.fsproj", "{8AE4FDBE-7387-4357-A4F2-632089947EEF}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpBio.Tests", "tests\FSharpBio.Tests\FSharpBio.Tests.fsproj", "{1EDC7F96-0709-4556-B7BF-AB9A616FB5A5}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpAux", "..\FSharpAux\src\FSharpAux\FSharpAux.fsproj", "{B4FC4A4F-DE5B-4B57-9AA7-F880B49003B1}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpAux.IO", "..\FSharpAux\src\FSharpAux.IO\FSharpAux.IO.fsproj", "{F1F062FA-F388-42D4-8D34-9C07758EB145}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpStats", "..\FSharpStats\src\FSharpStats\FSharpStats.fsproj", "{F6CE8A08-FB89-4544-A4D7-2EE636F87CB6}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Charting", "src\FSharp.Charting\FSharp.Charting.fsproj", "{A9C2CDF8-215D-4CF1-A31A-27DDFE94598B}"
 EndProject
@@ -51,22 +54,34 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F4C6F4F6-93E6-4CF5-AE0E-07884CBAE265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4C6F4F6-93E6-4CF5-AE0E-07884CBAE265}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4C6F4F6-93E6-4CF5-AE0E-07884CBAE265}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4C6F4F6-93E6-4CF5-AE0E-07884CBAE265}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3389617E-1C1A-404F-B0CE-3EE1BE41FE1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3389617E-1C1A-404F-B0CE-3EE1BE41FE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3389617E-1C1A-404F-B0CE-3EE1BE41FE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3389617E-1C1A-404F-B0CE-3EE1BE41FE1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B264D95-4676-4BDB-9F52-AEE3A2DEA2C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B264D95-4676-4BDB-9F52-AEE3A2DEA2C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B264D95-4676-4BDB-9F52-AEE3A2DEA2C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B264D95-4676-4BDB-9F52-AEE3A2DEA2C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1EDC7F96-0709-4556-B7BF-AB9A616FB5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1EDC7F96-0709-4556-B7BF-AB9A616FB5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1EDC7F96-0709-4556-B7BF-AB9A616FB5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1EDC7F96-0709-4556-B7BF-AB9A616FB5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6877CA0D-6E3D-4A3F-AE7E-F5C6B8989B0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6877CA0D-6E3D-4A3F-AE7E-F5C6B8989B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6877CA0D-6E3D-4A3F-AE7E-F5C6B8989B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6877CA0D-6E3D-4A3F-AE7E-F5C6B8989B0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{244E1538-296D-4680-9708-C1154B626DB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{244E1538-296D-4680-9708-C1154B626DB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{244E1538-296D-4680-9708-C1154B626DB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{244E1538-296D-4680-9708-C1154B626DB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C251C382-C604-4729-B360-2B62C88FC2A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C251C382-C604-4729-B360-2B62C88FC2A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C251C382-C604-4729-B360-2B62C88FC2A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C251C382-C604-4729-B360-2B62C88FC2A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AE4FDBE-7387-4357-A4F2-632089947EEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AE4FDBE-7387-4357-A4F2-632089947EEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AE4FDBE-7387-4357-A4F2-632089947EEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AE4FDBE-7387-4357-A4F2-632089947EEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4FC4A4F-DE5B-4B57-9AA7-F880B49003B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4FC4A4F-DE5B-4B57-9AA7-F880B49003B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4FC4A4F-DE5B-4B57-9AA7-F880B49003B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4FC4A4F-DE5B-4B57-9AA7-F880B49003B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1F062FA-F388-42D4-8D34-9C07758EB145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1F062FA-F388-42D4-8D34-9C07758EB145}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1F062FA-F388-42D4-8D34-9C07758EB145}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1F062FA-F388-42D4-8D34-9C07758EB145}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6CE8A08-FB89-4544-A4D7-2EE636F87CB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6CE8A08-FB89-4544-A4D7-2EE636F87CB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6CE8A08-FB89-4544-A4D7-2EE636F87CB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6CE8A08-FB89-4544-A4D7-2EE636F87CB6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A9C2CDF8-215D-4CF1-A31A-27DDFE94598B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A9C2CDF8-215D-4CF1-A31A-27DDFE94598B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9C2CDF8-215D-4CF1-A31A-27DDFE94598B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -78,7 +93,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{83F16175-43B1-4C90-A1EE-8E351C33435D} = {A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}
 		{8E6D5255-776D-4B61-85F9-73C37AA1FB9A} = {A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}
-		{3B264D95-4676-4BDB-9F52-AEE3A2DEA2C4} = {ED8079DD-2B06-4030-9F0F-DC548F98E1C4}
-		{1EDC7F96-0709-4556-B7BF-AB9A616FB5A5} = {ED8079DD-2B06-4030-9F0F-DC548F98E1C4}
+		{244E1538-296D-4680-9708-C1154B626DB4} = {ED8079DD-2B06-4030-9F0F-DC548F98E1C4}
 	EndGlobalSection
 EndGlobal

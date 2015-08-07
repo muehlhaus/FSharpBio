@@ -5,59 +5,43 @@ open System.Reflection
 open System.Runtime.Serialization 
 
 module ModificationInfo =
-
-    [<StructuralEquality;StructuralComparison>]
-    type ModificationResidual = { Name            : string;
-                                  GeneralName     : string;
-                                  Formula         : Formula.Formula;                                                        
-                                  AminoAcidSymbol : char;
-                                }
-
-
-    /// Creates a residual Modification
-    let createModificationResidual name generalName formula aminoAcidSymbol =
-        { Name = name; GeneralName = generalName; Formula = formula; AminoAcidSymbol = aminoAcidSymbol; }
-
     
-//    type ModTerminalLocation = Any = 0 | Cterm = 1 | Nterm = 2 | ProteinCterm = 3 | ProteinNterm = 4
-    type ModTerminalLocation = Cterm = 1 | Nterm = 2 | ProteinCterm = 3 | ProteinNterm = 4
+    type ModLocation = | Residual = 0 | Cterm = 1 | Nterm = 2 | ProteinCterm = 3 | ProteinNterm = 4
 
-    [<StructuralEquality;StructuralComparison>]
-    type ModificationTerminal = { Name            : string;
-                                  GeneralName     : string;
-                                  Formula         : Formula.Formula;                                                                                  
-                                  AminoAcidSymbol : char;
-                                  Location        : ModTerminalLocation;
-                                }
-
-    /// Creates a terminal Modification
-    let createModificationTerminal name generalName formula aminoAcidSymbol location =
-        { Name = name; GeneralName = generalName; Formula = formula; AminoAcidSymbol = aminoAcidSymbol; Location = location; }
-    
-    type Modification =
-        | Residual of ModificationResidual
-        | Terminal of ModificationTerminal        
-        | Both     of ModificationResidual * ModificationTerminal         
-
-    /// Returns true if AminoAcid is modified at the residual
-    let isResidualModified (m:Modification) =
-        match m with
-        | Modification.Residual (_) -> true
-        | Modification.Both (_)     -> true
-        | _                             -> false   
+    [<CustomEquality; CustomComparison>]
+    type Modification = {
+         Name     : string
+         Location : ModLocation
+         // Labeled Atom
+         Modify   : Formula.Formula -> Formula.Formula 
+                        }
+                        
+                        override x.Equals(yobj) =
+                            match yobj with
+                            | :? Modification as y -> (x.Name = y.Name)
+                            | _ -> false
+ 
+                        override x.GetHashCode() = hash x.Name
+                        
+                        interface System.IComparable with
+                            member x.CompareTo yobj =
+                                match yobj with
+                                | :? Modification as y -> compare x.Name y.Name
+                                | _ -> invalidArg "yobj" "cannot compare values of different types"
 
 
-    /// Returns true if AminoAcid is modified at the terminal
-    let isTerminalModified (m:Modification) =
-        match m with
-        | Modification.Terminal (_) -> true
-        | Modification.Both (_)     -> true
-        | _                             -> false
+    let createModification name location modifier =
+        { Name = name; Location = location; Modify = modifier}            
 
 
-    let formula (m:Modification) =
-        match m with
-        | Modification.Residual (mr) -> mr.Formula
-        | Modification.Terminal (mt) -> mt.Formula
-        | Modification.Both (mr,mt)  -> Formula.add mr.Formula mt.Formula
+    let createModificationWithAdd name location formula =
+        createModification name location (Formula.add formula)            
+
+    let createModificationWithSubstract name location formula =
+        createModification name location (Formula.substract formula)  
+
+    /// Returns modification name as string
+    let toString (md:Modification) =
+        md.Name
+
                                                     

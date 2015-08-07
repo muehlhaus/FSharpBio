@@ -4,12 +4,13 @@
 #I "../../bin"
 
 (**
-FSharpBio: Documentation
-========================
+FSharpBio
+=========
 
 FSharpBio aims to be a user-friendly library for Bioinformatics written in F#. It contains the basic data 
 structures for common biological objects like amino acids and nucleotides based on chemical formulas and chemical elements. 
 It facilitates some basic machine learning task as well as statistical analysis of biological data set.
+
 
 Example
 -------
@@ -17,30 +18,21 @@ Example
 This example demonstrates using a function defined in FSharpBio library.
 
 *)
-
-#r "FSharp.CoreX.dll"
 #r "FSharpBio.dll"
-
 open FSharpBio
 
-
-
-
-
+BioSequences.ofAminoAcidString "PEPTIDE"
 
 (**
-Some more info
 
 Samples & documentation
 -----------------------
 
 The library comes with comprehensible documentation. 
-It can include a tutorials automatically generated from `*.fsx` files in [the content folder][content]. 
+It can include tutorials automatically generated from `*.fsx` files in [the content folder][content]. 
 The API reference is automatically generated from Markdown comments in the library implementation.
 
- * Tutorial contains a further explanation of this sample library.
- ** [IO tutorial](FSharpBio.IO.html) for file input / outlut using FSharpBio
- ** [Machine learning tutorial](FSharpBio.ML.html) using FSharpBio
+ * [Tutorial](tutorial.html) contains a further explanation of this sample library.
 
  * [API Reference](reference/index.html) contains automatically generated documentation for all types, modules
    and functions in the library. This includes additional brief samples on using most of the
@@ -50,12 +42,17 @@ Contributing and copyright
 --------------------------
 
 The project is hosted on [GitHub][gh] where you can [report issues][issues], fork 
-the project and submit pull requests. If you're adding new public API, please also 
+the project and submit pull requests. If you're adding a new public API, please also 
 consider adding [samples][content] that can be turned into a documentation. You might
-also want to read [library design notes][readme] to understand how it works.
+also want to read the [library design notes][readme] to understand how it works.
 
 The library is available under Public Domain license, which allows modification and 
 redistribution for both commercial and non-commercial purposes. For more information see the 
 [License file][license] in the GitHub repository. 
 
+  [content]: https://github.com/fsprojects/FSharpBio/tree/master/docs/content
+  [gh]: https://github.com/fsprojects/FSharpBio
+  [issues]: https://github.com/fsprojects/FSharpBio/issues
+  [readme]: https://github.com/fsprojects/FSharpBio/blob/master/README.md
+  [license]: https://github.com/fsprojects/FSharpBio/blob/master/LICENSE.txt
 *)
