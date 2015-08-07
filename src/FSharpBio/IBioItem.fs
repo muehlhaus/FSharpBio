@@ -1,11 +1,14 @@
 ﻿namespace FSharpBio
 
-/// Interface for BioItem base.
+///Marker interface for BioItem base.
+//[<StructuralEquality;StructuralComparison>]
 type IBioItem =    
     abstract member Name     : string
     abstract member Symbol   : char
     abstract member ByteCode : byte 
-    abstract member Formula  : Formula.Formula         
+    abstract member Formula  : Formula.Formula
+    abstract member isTerminator : bool     
+    abstract member isGap        : bool
 
 
 /// Type abbreviation for converting char to Bioitem
