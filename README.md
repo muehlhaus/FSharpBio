@@ -1,6 +1,9 @@
 FSharpBio
 =========
 
+## :construction: This library is deprecated. Development is continued under the CSBiology organisation as **BioFSharp** [here](https://github.com/CSBiology/BioFSharp) :construction:
+
+
 FSharpBio aims to be a user-friendly library for Bioinformatics written in F#. It contains the basic data 
 structures for common biological objects like amino acids and nucleotides based on chemical formulas and chemical elements. 
 It facilitates some basic machine learning task as well as statistical analysis of biological data set. 
